@@ -14,8 +14,9 @@ def main():
     pong = "+PONG\r\n"
     connection, address = server_socket.accept()
     with connection:
-        connection.recv(1024)
-        connection.send(pong.encode())
+        for i in range [0,2]:
+            connection.recv(1024)
+            connection.send(pong.encode())
         
 
 
