@@ -1,5 +1,6 @@
 # Uncomment this to pass the first stage
 import socket
+import threading
 
 
 def main():
@@ -13,6 +14,7 @@ def main():
     
     pong = "+PONG\r\n"
     client_data = b""
+    
     connection, address = server_socket.accept()
     with connection:
         while True:
@@ -23,4 +25,6 @@ def main():
 
 
 if __name__ == "__main__":
+    t1 = threading.Thread(target=main, name="t1")
+    t2 = threading.Thread(target=main, name="t2")
     main()
