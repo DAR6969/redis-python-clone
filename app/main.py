@@ -3,6 +3,18 @@ import socket
 import threading
 
 
+def handleRequest(connection):
+    pong = "+PONG\r\n"
+    client_data = b""
+    
+    with connection:
+        while True:
+            data_stream = connection.recv(1024)
+            if not data_stream:
+                break
+            connection.send(pong.encode())
+        connection.close()
+
 def main():
     # You can use print statements as follows for debugging, they'll be visible when running tests.
     print("Logs from your program will appear here!")
@@ -12,28 +24,14 @@ def main():
     server_socket = socket.create_server(("localhost", 6379), reuse_port=True)
     # server_socket.accept() # wait for client
     
-    pong = "+PONG\r\n"
-    client_data = b""
-    
-    connection, address = server_socket.accept()
-    with connection:
-        while True:
-            data_stream = connection.recv(1024)
-            if not data_stream:
-                break
-            connection.send(pong.encode())
-        connection.close()
-            
+    while True:
+        connection, address = server_socket.accept()
+        t1 = threading.Thread(target=main, args=(connection,),name="t1")
         
+        t1.start()
+    
+    t1.join()
 
 
 if __name__ == "__main__":
-    t1 = threading.Thread(target=main, name="t1")
-    t2 = threading.Thread(target=main, name="t2")
-    
-    t1.start()
-    t2.start()
-    
-    t1.join()
-    t2.join()
-    # main()
+    main()
