@@ -17,9 +17,8 @@ def main():
     
     connection, address = server_socket.accept()
     with connection:
-        while True:
-            data_stream = connection.recv(1024)
-            connection.send(pong.encode())
+        data_stream = connection.recv(1024)
+        connection.send(pong.encode())
             
         
 
