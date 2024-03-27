@@ -17,8 +17,9 @@ def main():
     
     connection, address = server_socket.accept()
     with connection:
-        data_stream = connection.recv(1024)
-        connection.send(pong.encode())
+        while True:
+            data_stream = connection.recv(1024)
+            connection.send(pong.encode())
             
         
 
@@ -26,4 +27,10 @@ def main():
 if __name__ == "__main__":
     t1 = threading.Thread(target=main, name="t1")
     t2 = threading.Thread(target=main, name="t2")
-    main()
+    
+    t1.start()
+    t2.start()
+    
+    t1.join()
+    t2.join()
+    # main()
