@@ -19,6 +19,8 @@ def main():
     with connection:
         while True:
             data_stream = connection.recv(1024)
+            if not data_stream:
+                break
             connection.send(pong.encode())
         connection.close()
             
