@@ -15,8 +15,10 @@ def main():
     connection, address = server_socket.accept()
     with connection:
         for i in range(0,2):
+            print("hello", i)
             connection.recv(1024)
             connection.send(pong.encode())
+            
         
 
 
