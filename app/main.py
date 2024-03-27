@@ -20,6 +20,7 @@ def main():
         while True:
             data_stream = connection.recv(1024)
             connection.send(pong.encode())
+        connection.close()
             
         
 
