@@ -2,6 +2,22 @@
 import socket
 import threading
 
+class RedisProtocolParser:
+    @staticmethod
+    def parse(data):
+        commands = data.decode().split('\r\n')[:-1]
+        parsed_commands = []
+        for cmd in commands:
+            if cmd.startswith('*'):
+                num_args = int(cmd[1:])
+                parsed_args = []
+                for _ in range(num_args):
+                    cmd = commands.pop(0)
+                    arg_len = int(cmd[1:])
+                    arg = commands.pop(0)[:arg_len]
+                    parsed_args.append(arg)
+                parsed_commands.append(parsed_args)
+        return parsed_commands
 
 def handleRequest(connection):
     pong = "+PONG\r\n"
@@ -12,6 +28,7 @@ def handleRequest(connection):
             data_stream = connection.recv(1024)
             if not data_stream:
                 break
+            print(data_stream)
             connection.send(pong.encode())
         connection.close()
 
