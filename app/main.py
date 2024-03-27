@@ -12,12 +12,15 @@ def main():
     # server_socket.accept() # wait for client
     
     pong = "+PONG\r\n"
+    client_data = b""
     connection, address = server_socket.accept()
     with connection:
         for i in range(0,2):
-            print("hello", i)
-            connection.recv(1024)
-            connection.send(pong.encode())
+            # print("hello", i)
+            data_stream = connection.recv(1024)
+            with data_stream:
+                client_data = data_stream
+                connection.send(pong.encode())
             
         
 
