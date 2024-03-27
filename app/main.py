@@ -15,9 +15,8 @@ def main():
     client_data = b""
     connection, address = server_socket.accept()
     with connection:
-        data_stream = connection.recv(1024)
-        with data_stream:
-            client_data = data_stream
+        while True:
+            data_stream = connection.recv(1024)
             connection.send(pong.encode())
             
         
