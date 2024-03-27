@@ -29,8 +29,7 @@ def main():
         t1 = threading.Thread(target=handleRequest, args=(connection,),name="t1")
         
         t1.start()
-    
-    t1.join()
+        t1.join()
 
 
 if __name__ == "__main__":
