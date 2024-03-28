@@ -69,7 +69,7 @@ def handleRequest(connection):
             elif commands[0][0] == "set":
                 get_map[commands[0][1]] = commands[0][2]
                 connection.send(ok.encode())
-                if(len(commands)>3 and commands[0][3] == "px"):
+                if(len(commands[0])>3 and commands[0][3] == "px"):
                     key_remove = commands[0][1]
                     delay = int(commands[0][4]/1000)
                     timer = threading.Timer(delay, remove_key_px, args=(key_to_remove, delay))
