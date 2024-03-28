@@ -6,6 +6,7 @@ class RedisProtocolParser:
     @staticmethod
     def parse(data):
         commands = data.decode().split('\r\n')[:-1]
+        print(commands, "dhruv function commands")
         parsed_commands = []
         for cmd in commands:
             if cmd.startswith('*'):
