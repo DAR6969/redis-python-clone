@@ -102,7 +102,7 @@ def main():
     # Uncomment this to pass the first stage
     #
     args = parse_arguments()
-    master_port = args.master
+    master = args.master
     print(master, "dhruv master")
 
     # Extract and print flag values if provided
