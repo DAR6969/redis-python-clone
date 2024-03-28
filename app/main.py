@@ -14,7 +14,7 @@ class RedisProtocolParser:
             parsed_commands.append(arg)
         else:    
             commands_copy = commands.copy()
-            for cmd in commands:
+            for cmd in commands_copy:
                 if cmd.startswith('*'):
                     num_args = int(cmd[1:])
                     parsed_args = []
