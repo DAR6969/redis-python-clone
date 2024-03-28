@@ -23,6 +23,7 @@ class RedisProtocolParser:
                 arg_len = int(cmd[1:])
                 arg = commands.pop(0)[:arg_len]
                 parsed_commands.append(arg.decode())
+            print(parsed_commands, "dhruv parsed")
         return parsed_commands
     
     def encode_redis_bulk_string(input_string):
