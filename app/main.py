@@ -14,10 +14,15 @@ class RedisProtocolParser:
                 for _ in range(num_args):
                     cmd = commands.pop(0)
                     arg_len = int(cmd[1:])
-                    arg = commands.pop(0)[:arg_len]
+                    arg = commands.pop(0)[:arg_len].decode()
                     parsed_args.append(arg)
                 parsed_commands.append(parsed_args)
         return parsed_commands
+    
+    def encode_redis_bulk_string(input_string):
+        # Prefix the string with the length of the string and add the CRLF delimiter
+        encoded_string = f"${len(input_string)}\r\n{input_string}\r\n"
+        return encoded_string.encode()
 
 def handleRequest(connection):
     pong = "+PONG\r\n"
@@ -29,7 +34,12 @@ def handleRequest(connection):
             if not data_stream:
                 break
             print(data_stream)
-            connection.send(pong.encode())
+            commands = RedisProtocolParser.parse(data_stream)
+            if commands[0] == "ping":
+                connection.send(pong.encode())
+            else if commands[0] == "echo":
+                response = RedisProtocolParser.encode_redis_bulk_string(commands[1])
+                connection.send(response)
         connection.close()
 
 def main():
