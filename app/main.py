@@ -18,6 +18,7 @@ class RedisProtocolParser:
                 if cmd.startswith('*'):
                     num_args = int(cmd[1:])
                     parsed_args = []
+                    commands.pop(0)
                     for _ in range(num_args):
                         cmd_new = commands.pop(0)
                         print(cmd_new, "dhruv new")
