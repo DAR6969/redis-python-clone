@@ -37,15 +37,12 @@ class RedisProtocolParser:
         encoded_string = f"${len(input_string)}\r\n{input_string}\r\n"
         return encoded_string.encode()
 
-def remove_key_after_delay(key, delay):
-    time.sleep(delay)  # Sleep for the specified delay
-    my_dict.pop(key, None)  # Remove the key from the dictionary if it exists
-
 get_map = {}
 
 def remove_key_px(key, delay):
     time.sleep(delay)  # Sleep for the specified delay
-    get_map.pop(key, None)  # Remove the key from the dictionary if it exists
+    if key in get_map:
+        del get_map[key]
     print(get_map, "dhruv map set 2")
 
 def handleRequest(connection):
