@@ -14,7 +14,7 @@ class RedisProtocolParser:
                 for _ in range(num_args):
                     cmd = commands.pop(0)
                     arg_len = int(cmd[1:])
-                    arg = commands.pop(0)[:arg_len].decode()
+                    arg = commands.pop(0)[:arg_len]
                     parsed_args.append(arg)
                 parsed_commands.append(parsed_args)
         return parsed_commands
