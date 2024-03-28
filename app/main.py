@@ -8,22 +8,27 @@ class RedisProtocolParser:
         commands = data.decode().split('\r\n')[:-1]
         print(commands, "dhruv function commands")
         parsed_commands = []
-        for cmd in commands:
-            if cmd.startswith('*'):
-                num_args = int(cmd[1:])
-                parsed_args = []
-                for _ in range(num_args):
-                    cmd = commands.pop(0)
-                    arg_len = int(cmd[1:])
-                    arg = commands.pop(0)[:arg_len]
-                    print(arg, "dhruv arg")
-                    parsed_args.append(arg)
-                parsed_commands.append(parsed_args)
-            elif cmd.startswith('$'):
-                arg_len = int(cmd[1:])
-                arg = commands.pop(0)[:arg_len]
-                parsed_commands.append(arg.decode())
-            print(parsed_commands, "dhruv parsed")
+        if len(commands) == 3 and commands[0] == '1' and commands[1].startswith('$'):
+            arg_len = int(commands[1][1:])
+            arg = commands[2][:arg_len]
+            parsed_commands.append(arg.decode())
+        else:    
+            for cmd in commands:
+                if cmd.startswith('*'):
+                    num_args = int(cmd[1:])
+                    parsed_args = []
+                    for _ in range(num_args):
+                        cmd = commands.pop(0)
+                        arg_len = int(cmd[1:])
+                        arg = commands.pop(0)[:arg_len]
+                        print(arg, "dhruv arg")
+                        parsed_args.append(arg)
+                    parsed_commands.append(parsed_args)
+                # elif cmd.startswith('$'):
+                #     arg_len = int(cmd[1:])
+                #     arg = commands.pop(0)[:arg_len]
+                #     parsed_commands.append(arg.decode())
+                # print(parsed_commands, "dhruv parsed")
         return parsed_commands
     
     def encode_redis_bulk_string(input_string):
