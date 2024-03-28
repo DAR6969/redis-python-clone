@@ -15,6 +15,7 @@ class RedisProtocolParser:
                     cmd = commands.pop(0)
                     arg_len = int(cmd[1:])
                     arg = commands.pop(0)[:arg_len]
+                    print(arg, "dhruv arg")
                     parsed_args.append(arg)
                 parsed_commands.append(parsed_args)
         return parsed_commands
