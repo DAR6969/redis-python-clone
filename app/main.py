@@ -11,7 +11,7 @@ class RedisProtocolParser:
         if len(commands) == 3 and commands[0] == '*1' and commands[1].startswith('$'):
             arg_len = int(commands[1][1:])
             arg = commands[2][:arg_len]
-            parsed_commands.append(arg.decode())
+            parsed_commands.append(arg)
         else:    
             for cmd in commands:
                 if cmd.startswith('*'):
