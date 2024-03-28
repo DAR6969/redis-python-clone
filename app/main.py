@@ -40,7 +40,7 @@ class RedisProtocolParser:
 get_map = {}
 
 def remove_key_px(key, delay):
-    time.sleep(delay)  # Sleep for the specified delay
+    # time.sleep(delay)  # Sleep for the specified delay
     if key in get_map:
         del get_map[key]
     print(get_map, "dhruv map set 2")
