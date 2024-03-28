@@ -90,7 +90,8 @@ def handleRequest(connection):
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description="Decode flag arguments for TCP connection command")
-    parser.add_argument('--port', type=int, help='Port number to connect', required=False, default=6379)
+    parser.add_argument('--port', type=int, help='Port number to connect', required=False, default=6379, dest='port')
+    parser.add_argument('--replicaof', type=int, help='Port number to connect', required=False, dest='master')
     
     return parser.parse_args()
 
@@ -101,6 +102,8 @@ def main():
     # Uncomment this to pass the first stage
     #
     args = parse_arguments()
+    master_port = args.master
+    print(master, "dhruv master")
 
     # Extract and print flag values if provided
     if args.port is not None:
