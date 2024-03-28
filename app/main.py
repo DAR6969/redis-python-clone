@@ -34,7 +34,7 @@ def handleRequest(connection):
             data_stream = connection.recv(1024)
             if not data_stream:
                 break
-            print(data_stream)
+            print(data_stream, "dhruv stream")
             commands = RedisProtocolParser.parse(data_stream)
             print(commands, "dhruv commands")
             if commands[0] == "ping":
