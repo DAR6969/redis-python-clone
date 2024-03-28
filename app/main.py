@@ -8,7 +8,7 @@ class RedisProtocolParser:
         commands = data.decode().split('\r\n')[:-1]
         print(commands, "dhruv function commands")
         parsed_commands = []
-        if len(commands) == 3 and commands[0] == '1' and commands[1].startswith('$'):
+        if len(commands) == 3 and commands[0] == '*1' and commands[1].startswith('$'):
             arg_len = int(commands[1][1:])
             arg = commands[2][:arg_len]
             parsed_commands.append(arg.decode())
