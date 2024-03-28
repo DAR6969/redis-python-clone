@@ -1,6 +1,7 @@
 # Uncomment this to pass the first stage
 import socket
 import threading
+import time
 
 class RedisProtocolParser:
     @staticmethod
