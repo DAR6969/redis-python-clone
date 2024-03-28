@@ -36,6 +36,7 @@ def handleRequest(connection):
                 break
             print(data_stream)
             commands = RedisProtocolParser.parse(data_stream)
+            print(commands, "dhruv commands")
             if commands[0] == "ping":
                 connection.send(pong.encode())
             elif commands[0] == "echo":
