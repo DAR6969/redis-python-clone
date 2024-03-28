@@ -6,7 +6,7 @@ class RedisProtocolParser:
     @staticmethod
     def parse(data):
         commands = data.decode().split('\r\n')[:-1]
-        print(commands, "dhruv function commands")
+        # print(commands, "dhruv function commands")
         parsed_commands = []
         if len(commands) == 3 and commands[0] == '*1' and commands[1].startswith('$'):
             arg_len = int(commands[1][1:])
@@ -59,7 +59,7 @@ def handleRequest(connection):
                 break
             # print(data_stream, "dhruv stream")
             commands = RedisProtocolParser.parse(data_stream)
-            # print(commands, "dhruv commands")
+            print(commands, "dhruv commands")
             if commands[0] == "ping":
                 connection.send(pong.encode())
             elif commands[0][0] == "echo":
