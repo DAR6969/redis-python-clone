@@ -58,7 +58,7 @@ def handleRequest(connection):
                 connection.send(response)
             elif commands[0][0] == "set":
                 get_map[commands[0][1]] = commands[0][2]
-                connection.send(ok.encode)
+                connection.send(ok.encode())
             elif commands[0][0] == "get":
                 response = RedisProtocolParser.encode_redis_bulk_string(get_map[commands[0][1]])
                 connection.send(response)    
