@@ -2,6 +2,7 @@
 import socket
 import threading
 import time
+import argparse 
 
 class RedisProtocolParser:
     @staticmethod
@@ -45,6 +46,7 @@ def remove_key_px(key, delay):
         del get_map[key]
     print(get_map, "dhruv map set 2")
 
+
 def handleRequest(connection):
     pong = "+PONG\r\n"
     ok = "+OK\r\n"
@@ -84,12 +86,28 @@ def handleRequest(connection):
                 connection.send(response)    
         connection.close()
 
+def parse_arguments():
+    parser = argparse.ArgumentParser(description="Decode flag arguments for TCP connection command")
+    parser.add_argument('--port', type=int, help='Port number to connect', required=False)
+    
+    return parser.parse_args()
+
 def main():
     # You can use print statements as follows for debugging, they'll be visible when running tests.
     print("Logs from your program will appear here!")
 
     # Uncomment this to pass the first stage
     #
+    args = parse_arguments()
+
+    # Extract and print flag values if provided
+    if args.port is not None:
+        port = args.port
+        print(f"Port number: {port}")
+    else:
+        port = 6379
+        print("Port number not specified.")
+        
     server_socket = socket.create_server(("localhost", 6379), reuse_port=True)
     # server_socket.accept() # wait for client
     
