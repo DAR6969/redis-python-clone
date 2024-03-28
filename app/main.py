@@ -84,7 +84,7 @@ def handleRequest(connection):
                 else:
                     response = null_bulk.encode()
                 connection.send(response) 
-            elif commands[0][0] == "info":
+            elif commands[0][0] == "INFO":
                 connection.send("$11\r\nrole:master\r\n".encode())   
         connection.close()
 
