@@ -44,6 +44,7 @@ class RedisProtocolParser:
 def handleRequest(connection):
     pong = "+PONG\r\n"
     client_data = b""
+    get_map = {}
     
     with connection:
         while True:
@@ -59,6 +60,11 @@ def handleRequest(connection):
                 response = RedisProtocolParser.encode_redis_bulk_string(commands[0][1])
                 print(response, "dhruv resp")
                 connection.send(response)
+            elif commands[0][0] == "set":
+                get_map[commands[0][1]] = commands[0][2]
+            elif commands[0][0] == "get":
+                response = RedisProtocolParser.encode_redis_bulk_string(get_map[commands[0][1]])
+                connection.send(response)    
         connection.close()
 
 def main():
