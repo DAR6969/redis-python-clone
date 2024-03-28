@@ -29,11 +29,6 @@ class RedisProtocolParser:
                         print(arg, "dhruv arg")
                         parsed_args.append(arg)
                     parsed_commands.append(parsed_args)
-                # elif cmd.startswith('$'):
-                #     arg_len = int(cmd[1:])
-                #     arg = commands.pop(0)[:arg_len]
-                #     parsed_commands.append(arg.decode())
-                # print(parsed_commands, "dhruv parsed")
         return parsed_commands
     
     def encode_redis_bulk_string(input_string):
@@ -43,6 +38,7 @@ class RedisProtocolParser:
 
 def handleRequest(connection):
     pong = "+PONG\r\n"
+    ok = "+OK\r\n"
     client_data = b""
     get_map = {}
     
@@ -62,6 +58,7 @@ def handleRequest(connection):
                 connection.send(response)
             elif commands[0][0] == "set":
                 get_map[commands[0][1]] = commands[0][2]
+                connection.send(ok.encode)
             elif commands[0][0] == "get":
                 response = RedisProtocolParser.encode_redis_bulk_string(get_map[commands[0][1]])
                 connection.send(response)    
