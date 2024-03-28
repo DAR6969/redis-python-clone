@@ -83,12 +83,14 @@ def handleRequest(connection):
                     response = RedisProtocolParser.encode_redis_bulk_string(get_map[commands[0][1]])
                 else:
                     response = null_bulk.encode()
-                connection.send(response)    
+                connection.send(response) 
+            elif commands[0][0] == "info":
+                connection.send("$11\r\nrole:master\r\n".encode())   
         connection.close()
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description="Decode flag arguments for TCP connection command")
-    parser.add_argument('--port', type=int, help='Port number to connect', required=False)
+    parser.add_argument('--port', type=int, help='Port number to connect', required=False, default=6379)
     
     return parser.parse_args()
 
