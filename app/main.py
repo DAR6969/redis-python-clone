@@ -77,7 +77,7 @@ def handleRequest(connection):
                 print(get_map, "dhruv map set")
             elif commands[0][0] == "get":
                 print(get_map, "dhruv map get")
-                if get_map[commands[0][1]]:
+                if commands[0][1] in get_map:
                     response = RedisProtocolParser.encode_redis_bulk_string(get_map[commands[0][1]])
                 else:
                     response = null_bulk.encode()
