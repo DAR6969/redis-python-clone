@@ -18,6 +18,10 @@ class RedisProtocolParser:
                     print(arg, "dhruv arg")
                     parsed_args.append(arg)
                 parsed_commands.append(parsed_args)
+            elif cmd.startswith('$'):
+                arg_len = int(cmd[1:])
+                arg = commands.pop(0)[:arg_len]
+                parsed_commands.append(arg.decode())
         return parsed_commands
     
     def encode_redis_bulk_string(input_string):
