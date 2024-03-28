@@ -75,7 +75,7 @@ def handleRequest(connection):
                     delay = int(commands[0][4])/1000
                     timer = threading.Timer(delay, remove_key_px, args=(key_remove, delay))
                     timer.start()
-                    print(get_map, "dhruv map")
+                print(get_map, "dhruv map")
             elif commands[0][0] == "get":
                 if get_map[commands[0][1]]:
                     response = RedisProtocolParser.encode_redis_bulk_string(get_map[commands[0][1]])
