@@ -57,6 +57,7 @@ def handleRequest(connection):
                 connection.send(pong.encode())
             elif commands[0] == "echo":
                 response = RedisProtocolParser.encode_redis_bulk_string(commands[1])
+                print(response, "dhruv resp")
                 connection.send(response)
         connection.close()
 
