@@ -46,6 +46,7 @@ get_map = {}
 def remove_key_px(key, delay):
     time.sleep(delay)  # Sleep for the specified delay
     get_map.pop(key, None)  # Remove the key from the dictionary if it exists
+    print(get_map, "dhruv map set 2")
 
 def handleRequest(connection):
     pong = "+PONG\r\n"
@@ -75,8 +76,9 @@ def handleRequest(connection):
                     delay = int(commands[0][4])/1000
                     timer = threading.Timer(delay, remove_key_px, args=(key_remove, delay))
                     timer.start()
-                print(get_map, "dhruv map")
+                print(get_map, "dhruv map set")
             elif commands[0][0] == "get":
+                print(get_map, "dhruv map get")
                 if get_map[commands[0][1]]:
                     response = RedisProtocolParser.encode_redis_bulk_string(get_map[commands[0][1]])
                 else:
