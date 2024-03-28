@@ -21,12 +21,12 @@ class RedisProtocolParser:
                     commands.pop(0)
                     for _ in range(num_args):
                         cmd_new = commands.pop(0)
-                        print(cmd_new, "dhruv new")
-                        print(commands, "dhruv commads pop 1")
+                        # print(cmd_new, "dhruv new")
+                        # print(commands, "dhruv commads pop 1")
                         arg_len = int(cmd_new[1:])
                         arg = commands.pop(0)[:arg_len]
-                        print(commands, "dhruv commads pop 2")
-                        print(arg, "dhruv arg")
+                        # print(commands, "dhruv commads pop 2")
+                        # print(arg, "dhruv arg")
                         parsed_args.append(arg)
                     parsed_commands.append(parsed_args)
         return parsed_commands
@@ -57,14 +57,14 @@ def handleRequest(connection):
             data_stream = connection.recv(1024)
             if not data_stream:
                 break
-            print(data_stream, "dhruv stream")
+            # print(data_stream, "dhruv stream")
             commands = RedisProtocolParser.parse(data_stream)
-            print(commands, "dhruv commands")
+            # print(commands, "dhruv commands")
             if commands[0] == "ping":
                 connection.send(pong.encode())
             elif commands[0][0] == "echo":
                 response = RedisProtocolParser.encode_redis_bulk_string(commands[0][1])
-                print(response, "dhruv resp")
+                # print(response, "dhruv resp")
                 connection.send(response)
             elif commands[0][0] == "set":
                 get_map[commands[0][1]] = commands[0][2]
@@ -74,8 +74,8 @@ def handleRequest(connection):
                     delay = int(commands[0][4]/1000)
                     timer = threading.Timer(delay, remove_key_px, args=(key_to_remove, delay))
                     timer.start()
+                    print(get_map, "dhruv map")
             elif commands[0][0] == "get":
-                print(get_map, "dhruv map")
                 if get_map[commands[0][1]]:
                     response = RedisProtocolParser.encode_redis_bulk_string(get_map[commands[0][1]])
                 else:
