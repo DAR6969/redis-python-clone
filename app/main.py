@@ -69,6 +69,7 @@ def handleRequest(connection):
                 get_map[commands[0][1]] = commands[0][2]
                 connection.send(ok.encode())
                 if(len(commands[0])>3 and commands[0][3] == "px"):
+                    print("hello!")
                     key_remove = commands[0][1]
                     delay = int(commands[0][4])/1000
                     timer = threading.Timer(delay, remove_key_px, args=(key_remove, delay))
