@@ -37,7 +37,7 @@ def handleRequest(connection):
             commands = RedisProtocolParser.parse(data_stream)
             if commands[0] == "ping":
                 connection.send(pong.encode())
-            else if commands[0] == "echo":
+            elif commands[0] == "echo":
                 response = RedisProtocolParser.encode_redis_bulk_string(commands[1])
                 connection.send(response)
         connection.close()
