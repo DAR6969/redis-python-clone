@@ -36,11 +36,21 @@ class RedisProtocolParser:
         encoded_string = f"${len(input_string)}\r\n{input_string}\r\n"
         return encoded_string.encode()
 
+def remove_key_after_delay(key, delay):
+    time.sleep(delay)  # Sleep for the specified delay
+    my_dict.pop(key, None)  # Remove the key from the dictionary if it exists
+
+get_map = {}
+
+def remove_key_px(key, delay):
+    time.sleep(delay)  # Sleep for the specified delay
+    get_map.pop(key, None)  # Remove the key from the dictionary if it exists
+
 def handleRequest(connection):
     pong = "+PONG\r\n"
     ok = "+OK\r\n"
+    null_bulk = "$-1\r\n"
     client_data = b""
-    get_map = {}
     
     with connection:
         while True:
@@ -59,8 +69,16 @@ def handleRequest(connection):
             elif commands[0][0] == "set":
                 get_map[commands[0][1]] = commands[0][2]
                 connection.send(ok.encode())
+                if(commands[0][3] == "px"):
+                    key_remove = commands[0][1]
+                    delay = int(commands[0][4]/1000)
+                    timer = threading.Timer(delay, remove_key_px, args=(key_to_remove, delay))
+                    timer.start()
             elif commands[0][0] == "get":
-                response = RedisProtocolParser.encode_redis_bulk_string(get_map[commands[0][1]])
+                if get_map[commands[0][1]]:
+                    response = RedisProtocolParser.encode_redis_bulk_string(get_map[commands[0][1]])
+                else:
+                    response = null_bulk.encode()
                 connection.send(response)    
         connection.close()
 
