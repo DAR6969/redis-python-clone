@@ -71,7 +71,7 @@ def handleRequest(connection):
                 connection.send(ok.encode())
                 if(len(commands[0])>3 and commands[0][3] == "px"):
                     key_remove = commands[0][1]
-                    delay = int(commands[0][4]/1000)
+                    delay = commands[0][4]/1000
                     timer = threading.Timer(delay, remove_key_px, args=(key_to_remove, delay))
                     timer.start()
                     print(get_map, "dhruv map")
