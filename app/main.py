@@ -103,7 +103,7 @@ def main():
     #
     args = parse_arguments()
     master = args.master
-    print(master, "dhruv master")
+    print(master, "dhruv masters")
 
     # Extract and print flag values if provided
     if args.port is not None:
