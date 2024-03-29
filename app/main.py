@@ -85,7 +85,10 @@ def handleRequest(connection):
                     response = null_bulk.encode()
                 connection.send(response) 
             elif commands[0][0] == "INFO":
-                connection.send("$11\r\nrole:master\r\n".encode())   
+                if replica_server:
+                    connection.send("$11\r\nrole:slave\r\n".encode())    
+                else:
+                    connection.send("$11\r\nrole:master\r\n".encode())   
         connection.close()
 
 def parse_arguments():
@@ -95,6 +98,9 @@ def parse_arguments():
     
     return parser.parse_args()
 
+
+replica_server = False
+
 def main():
     # You can use print statements as follows for debugging, they'll be visible when running tests.
     print("Logs from your program will appear here!")
@@ -103,6 +109,8 @@ def main():
     #
     args = parse_arguments()
     master = args.master
+    if master[1] is not None:
+        replica_server = True
     print(master, "dhruv masters")
 
     # Extract and print flag values if provided
