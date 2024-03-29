@@ -111,6 +111,7 @@ def main():
     master = args.master
     if master is not None:
         replica_server = True
+        print(replica_server, "dhruv replica")
     print(master, "dhruv masters")
 
     # Extract and print flag values if provided
