@@ -96,6 +96,7 @@ def handleRequest(connection):
                     connection.send("$10\r\nrole:slave\r\n".encode())    
                 else:
                     print("master comm sent")
+                    role="role:master"
                     master_replid = "master_replid:8371b4fb1155b71f4a04d3e1bc3e18c4a990aeeb"
                     master_repl_offset = "master_repl_offset:0"
                     # role_info_result = RedisProtocolParser.create_bulk_string("role:master")
