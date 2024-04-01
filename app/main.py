@@ -96,11 +96,11 @@ def handleRequest(connection):
                     connection.send("$10\r\nrole:slave\r\n".encode())    
                 else:
                     print("master comm sent")
-                    role="role:master"
-                    master_replid = "master_replid:8371b4fb1155b71f4a04d3e1bc3e18c4a990aeeb"
-                    master_repl_offset = "master_repl_offset:0"
+                    role=f"role:master"
+                    master_replid = f"master_replid:8371b4fb1155b71f4a04d3e1bc3e18c4a990aeeb"
+                    master_repl_offset = f"master_repl_offset:0"
                     # role_info_result = RedisProtocolParser.create_bulk_string("role:master")
-                    new_info_result = RedisProtocolParser.create_bulk_string(master_replid ,role, master_repl_offset)
+                    new_info_result = RedisProtocolParser.create_bulk_string(role, master_replid ,master_repl_offset)
                     print(new_info_result, "dhruv new result")
                     # connection.send(role_info_result)
                     connection.send(new_info_result)
