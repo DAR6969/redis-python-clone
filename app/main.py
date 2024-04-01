@@ -112,6 +112,7 @@ def main():
     args = parse_arguments()
     master = args.master
     if master is not None:
+        global replica_server
         replica_server = True
     print(master, "dhruv masters")
     print(replica_server, "dhruv replica")
