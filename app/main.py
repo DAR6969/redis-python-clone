@@ -100,7 +100,7 @@ def handleRequest(connection):
                     master_repl_offset = 0
                     new_info_result = RedisProtocolParser.create_bulk_string("role:master",master_replid, master_repl_offset)
                     connection.send(new_info_result)
-                    connection.send("$11\r\nrole:master\r\n".encode())
+                    # connection.send("$11\r\nrole:master\r\n".encode())
                     
         connection.close()
 
