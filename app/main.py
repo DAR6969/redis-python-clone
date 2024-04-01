@@ -37,6 +37,12 @@ class RedisProtocolParser:
         # Prefix the string with the length of the string and add the CRLF delimiter
         encoded_string = f"${len(input_string)}\r\n{input_string}\r\n"
         return encoded_string.encode()
+    
+    def create_bulk_string(*args):
+        bulk_string = ""
+        for arg in args:
+            bulk_string += f"${len(arg)}\r\n{arg}\r\n"
+        return bulk_string.encode()
 
 get_map = {}
 
@@ -90,7 +96,12 @@ def handleRequest(connection):
                     connection.send("$10\r\nrole:slave\r\n".encode())    
                 else:
                     print("master comm sent")
-                    connection.send("$11\r\nrole:master\r\n".encode())   
+                    master_replid = "8371b4fb1155b71f4a04d3e1bc3e18c4a990aeeb"
+                    master_repl_offset = 0
+                    new_info_result = RedisProtocolParser.create_bulk_string("role:master",master_replid, master_repl_offset)
+                    connection.send(new_info_result)
+                    # connection.send("$11\r\nrole:master\r\n".encode())
+                    
         connection.close()
 
 def parse_arguments():
