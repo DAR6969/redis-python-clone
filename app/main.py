@@ -41,7 +41,7 @@ class RedisProtocolParser:
     def create_bulk_string(*args):
         bulk_string = ""
         for arg in args:
-            bulk_string += f"${len(arg)}\r\n{arg}\r\n"
+            bulk_string += f"${len(str(arg))}\r\n{arg}\r\n"
         return bulk_string.encode()
 
 get_map = {}
