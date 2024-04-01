@@ -98,8 +98,10 @@ def handleRequest(connection):
                     print("master comm sent")
                     master_replid = "master_replid:8371b4fb1155b71f4a04d3e1bc3e18c4a990aeeb"
                     master_repl_offset = "master_repl_offset:0"
-                    new_info_result = RedisProtocolParser.create_bulk_string(master_replid, master_repl_offset, "role:master")
+                    role_info_result = RedisProtocolParser.create_bulk_string("role:master")
+                    new_info_result = RedisProtocolParser.create_bulk_string(master_replid, master_repl_offset)
                     print(new_info_result, "dhruv new result")
+                    conection.send(role_info_result)
                     connection.send(new_info_result)
                     # connection.send("$11\r\nrole:master\r\n".encode())
                     
