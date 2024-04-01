@@ -89,6 +89,7 @@ def handleRequest(connection):
                     print("replicate comm sent")
                     connection.send("$10\r\nrole:slave\r\n".encode())    
                 else:
+                    print("master comm sent")
                     connection.send("$11\r\nrole:master\r\n".encode())   
         connection.close()
 
