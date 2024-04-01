@@ -86,6 +86,7 @@ def handleRequest(connection):
                 connection.send(response) 
             elif commands[0][0] == "INFO":
                 if replica_server:
+                    print("replicate comm sent")
                     connection.send("$10\r\nrole:slave\r\n".encode())    
                 else:
                     connection.send("$11\r\nrole:master\r\n".encode())   
