@@ -41,7 +41,7 @@ class RedisProtocolParser:
     def create_bulk_string(*args):
         bulk_string = ""
         for arg in args:
-            bulk_string += f"${len(str(arg))}\r\n{arg}\n"
+            bulk_string += f"${len(str(arg))}\r\n{arg}\r\n"
         return bulk_string.encode()
 
 get_map = {}
@@ -100,7 +100,7 @@ def handleRequest(connection):
                     master_replid = "master_replid:8371b4fb1155b71f4a04d3e1bc3e18c4a990aeeb"
                     master_repl_offset = "master_repl_offset:0"
                     # role_info_result = RedisProtocolParser.create_bulk_string("role:master")
-                    new_info_result = RedisProtocolParser.create_bulk_string("role:master",master_replid, master_repl_offset)
+                    new_info_result = RedisProtocolParser.create_bulk_string("role:master", master_repl_offset, master_replid)
                     print(new_info_result, "dhruv new result")
                     # connection.send(role_info_result)
                     connection.send(new_info_result)
