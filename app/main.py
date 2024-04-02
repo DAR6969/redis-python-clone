@@ -154,8 +154,11 @@ def main():
     # server_socket.accept() # wait for client
     if master is not None:
         ping = "PING"
-        server_socket.connect((master[0], master[1]))
-        server_socket.send(RedisProtocolParser.create_array(ping))
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.connect((master[0], master[1]))
+        sock.send(RedisProtocolParser.create_array(ping))
+        response = client_socket.recv(1024)
+        print(f"{response.decode()}")
     
     while True:
         connection, address = server_socket.accept()
