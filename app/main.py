@@ -171,7 +171,7 @@ def main():
         print(f"{response.decode()}")
         sock.send(RedisProtocolParser.create_array(*psync.split()))
         response = sock.recv(1024)
-        print(f"{response.decode()}")
+        # print(f"{response.decode()}")
     
     while True:
         connection, address = server_socket.accept()
