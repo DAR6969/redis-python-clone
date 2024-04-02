@@ -155,7 +155,7 @@ def main():
     if master is not None:
         ping = "PING"
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        sock.connect((master[0], master[1]))
+        sock.connect((master[0], int(master[1])))
         sock.send(RedisProtocolParser.create_array(ping))
         response = client_socket.recv(1024)
         print(f"{response.decode()}")
