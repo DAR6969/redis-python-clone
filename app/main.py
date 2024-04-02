@@ -156,7 +156,7 @@ def main():
         ping = "PING"
         REPLCONF_port = "REPLCONF listening-port " + str(args.port)
         REPLCONF_capa = "REPLCONF capa psync2"
-        pstnc = "PSYNC ? -1"
+        psync = "PSYNC ? -1"
         # handshake_messages = ["PING", "REPLCONF listening-port <PORT>"]
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.connect((master[0], int(master[1])))
