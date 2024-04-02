@@ -43,6 +43,15 @@ class RedisProtocolParser:
         for arg in args:
             bulk_string += f"${len(str(arg))}\r\n{arg}\r\n"
         return bulk_string.encode()
+    
+    def create_array(*args):
+        num_elements = len(args)
+        array_string = f"*{num_elements}\r\n"
+        for arg in args:
+            if isinstance(arg, int):
+                arg = str(arg)
+            array_string += f"${len(arg)}\r\n{arg}\r\n"
+        return array_string.encode()
 
 get_map = {}
 
@@ -131,6 +140,7 @@ def main():
         replica_server = True
     print(master, "dhruv masters")
     print(replica_server, "dhruv replica")
+        
 
     # Extract and print flag values if provided
     if args.port is not None:
@@ -142,6 +152,9 @@ def main():
         
     server_socket = socket.create_server(("localhost", port), reuse_port=True)
     # server_socket.accept() # wait for client
+    ping = "PING"
+    socket.connect(master[0], master[1])
+    socket.send(RedisProtocolParser.create_array(ping))
     
     while True:
         connection, address = server_socket.accept()
