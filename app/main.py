@@ -154,7 +154,7 @@ def main():
     # server_socket.accept() # wait for client
     if master is not None:
         ping = "PING"
-        server_socket.connect(master[0], master[1])
+        server_socket.connect((master[0], master[1]))
         server_socket.send(RedisProtocolParser.create_array(ping))
     
     while True:
