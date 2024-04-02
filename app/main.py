@@ -162,10 +162,10 @@ def main():
         sock.send(RedisProtocolParser.create_array(ping))
         response = sock.recv(1024)
         print(f"{response.decode()}")
-        sock.send(RedisProtocolParser.create_array(tuple(REPLCONF_port.split())))
+        sock.send(RedisProtocolParser.create_array(*REPLCONF_port.split()))
         response = sock.recv(1024)
         print(f"{response.decode()}")
-        sock.send(RedisProtocolParser.create_array(tuple(REPLCONF_capa.split())))
+        sock.send(RedisProtocolParser.create_array(*REPLCONF_capa.split()))
         response = sock.recv(1024)
         print(f"{response.decode()}")
     
