@@ -152,9 +152,10 @@ def main():
         
     server_socket = socket.create_server(("localhost", port), reuse_port=True)
     # server_socket.accept() # wait for client
-    ping = "PING"
-    server_socket.connect(master[0], master[1])
-    server_socket.send(RedisProtocolParser.create_array(ping))
+    if master is not None:
+        ping = "PING"
+        server_socket.connect(master[0], master[1])
+        server_socket.send(RedisProtocolParser.create_array(ping))
     
     while True:
         connection, address = server_socket.accept()
