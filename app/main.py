@@ -154,9 +154,18 @@ def main():
     # server_socket.accept() # wait for client
     if master is not None:
         ping = "PING"
+        REPLCONF_port = "REPLCONF listening-port" + master[1]
+        REPLCONF_capa = "REPLCONF capa psync2"
+        # handshake_messages = ["PING", "REPLCONF listening-port <PORT>"]
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.connect((master[0], int(master[1])))
         sock.send(RedisProtocolParser.create_array(ping))
+        response = sock.recv(1024)
+        print(f"{response.decode()}")
+        sock.send(RedisProtocolParser.create_array(REPLCONF_port))
+        response = sock.recv(1024)
+        print(f"{response.decode()}")
+        sock.send(RedisProtocolParser.create_array(REPLCONF_capa))
         response = sock.recv(1024)
         print(f"{response.decode()}")
     
