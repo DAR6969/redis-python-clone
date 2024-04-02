@@ -154,7 +154,7 @@ def main():
     # server_socket.accept() # wait for client
     if master is not None:
         ping = "PING"
-        REPLCONF_port = "REPLCONF listening-port " + master[1]
+        REPLCONF_port = "REPLCONF listening-port " + args.port
         REPLCONF_capa = "REPLCONF capa psync2"
         # handshake_messages = ["PING", "REPLCONF listening-port <PORT>"]
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
