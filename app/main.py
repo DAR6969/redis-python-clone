@@ -76,7 +76,7 @@ def handleRequest(connection):
             # print(data_stream, "dhruv stream")
             commands = RedisProtocolParser.parse(data_stream)
             print(commands, "dhruv commands")
-            if commands[0] == "ping":
+            if commands[0].lower() == "ping":
                 connection.send(pong.encode())
             elif commands[0][0] == "echo":
                 response = RedisProtocolParser.encode_redis_bulk_string(commands[0][1])
