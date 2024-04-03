@@ -117,6 +117,11 @@ def handleRequest(connection):
             elif commands[0][0] == "REPLCONF":   
                 ok_response = "+OK\r\n"
                 connection.send(ok_response.encode())
+            elif commands[0][0] == "PSYNC":
+                if not replica_server:
+                    master_replid = f"8371b4fb1155b71f4a04d3e1bc3e18c4a990aeeb"
+                    sync_res = "+FULLRESYNC " + master_replid + "0\r\n"
+                    connection.send(sync_res.encode())
         connection.close()
 
 def parse_arguments():
