@@ -182,6 +182,7 @@ def main():
     
     while True:
         connection, address = server_socket.accept()
+        print("connection received to server")
         t1 = threading.Thread(target=handleRequest, args=(connection,),name="t1")
         
         t1.start()
