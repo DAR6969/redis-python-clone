@@ -114,7 +114,9 @@ def handleRequest(connection):
                     print(new_info_result, "dhruv new result")
                     connection.send(new_info_result)
                     # connection.send("$11\r\nrole:master\r\n".encode())
-                    
+            elif commands[0][0] == "REPLCONF":   
+                ok_response = "+OK\r\n"
+                connection.send(ok_response.encode())
         connection.close()
 
 def parse_arguments():
