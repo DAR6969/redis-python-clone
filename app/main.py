@@ -3,6 +3,7 @@ import socket
 import threading
 import time
 import argparse 
+import base64
 
 class RedisProtocolParser:
     @staticmethod
