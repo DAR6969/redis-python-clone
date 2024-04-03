@@ -44,6 +44,13 @@ class RedisProtocolParser:
             bulk_string += f"${len(str(arg))}\r\n{arg}\r\n"
         return bulk_string.encode()
     
+    def create_bulk_string_bytes(input_bytes):
+        length = len(input_bytes)
+        encoded_string = f"${length}\r\n"
+        encoded_string += input_bytes.decode()  # Decode bytes to string
+        # encoded_string += "\r\n"
+        return encoded_string.encode()
+    
     def create_array(*args):
         num_elements = len(args)
         array_string = f"*{num_elements}\r\n"
@@ -122,6 +129,11 @@ def handleRequest(connection):
                     master_replid = f"8371b4fb1155b71f4a04d3e1bc3e18c4a990aeeb"
                     sync_res = "+FULLRESYNC " + master_replid + " 0\r\n"
                     connection.send(sync_res.encode())
+                    
+                    empty_rdb_hex = "524544495330303131fa0972656469732d76657205372e322e30fa0a72656469732d62697473c040fa056374696d65c26d08bc65fa08757365642d6d656dc2b0c41000fa08616f662d62617365c000fff06e3bfec0ff5aa2"
+                    empty_rdb_bytes = bytes.fromhex(empty_rdb_hex)
+                    empty_rdb_binary = RedisProtocolParser.create_bulk_string_bytes(empty_rdb_bytes)
+                    connection.send(empty_rdb_binary)
         connection.close()
 
 def parse_arguments():
@@ -169,13 +181,13 @@ def main():
         sock.connect((master[0], int(master[1])))
         sock.send(RedisProtocolParser.create_array(ping))
         response = sock.recv(1024)
-        print(f"{response.decode()}, dhruv replica socket response 1")
+        print(f"{response.decode()}, dhruv replica socket response from master 1")
         sock.send(RedisProtocolParser.create_array(*REPLCONF_port.split()))
         response = sock.recv(1024)
-        print(f"{response.decode()}, dhruv replica socket response 2")
+        print(f"{response.decode()}, dhruv replica socket response from master 2")
         sock.send(RedisProtocolParser.create_array(*REPLCONF_capa.split()))
         response = sock.recv(1024)
-        print(f"{response.decode()}, dhruv replica socket response 3")
+        print(f"{response.decode()}, dhruv replica socket response from master 3")
         sock.send(RedisProtocolParser.create_array(*psync.split()))
         response = sock.recv(1024)
         # print(f"{response.decode()}")
