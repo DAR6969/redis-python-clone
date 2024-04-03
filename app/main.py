@@ -130,8 +130,8 @@ def handleRequest(connection):
                     sync_res = "+FULLRESYNC " + master_replid + " 0\r\n"
                     connection.send(sync_res.encode())
                     
-                    empty_rdb_hex = "524544495330303131fa0972656469732d76657205372e322e30fa0a72656469732d62697473c040fa056374696d65c26d08bc65fa08757365642d6d656dc2b0c41000fa08616f662d62617365c000fff06e3bfec0ff5aa2"
-                    empty_rdb_bytes = bytes.fromhex(empty_rdb_hex)
+                    empty_rdb_base64 = "UkVESVMwMDEx+glyZWRpcy12ZXIFNy4yLjD6CnJlZGlzLWJpdHPAQPoFY3RpbWXCbQi8ZfoIdXNlZC1tZW3CsMQQAPoIYW9mLWJhc2XAAP/wbjv+wP9aog=="
+                    empty_rdb_bytes = base64.b64decode(empty_rdb_base64)
                     empty_rdb_binary = RedisProtocolParser.create_bulk_string_bytes(empty_rdb_bytes)
                     connection.send(empty_rdb_binary)
         connection.close()
