@@ -47,9 +47,9 @@ class RedisProtocolParser:
     def create_bulk_string_bytes(input_bytes):
         length = len(input_bytes)
         encoded_string = f"${length}\r\n"
-        encoded_string += input_bytes  # Decode bytes to string
+        encoded_string += input_bytes.decode('latin1')  # Decode bytes to string
         # encoded_string += "\r\n"
-        return encoded_string.encode()
+        return encoded_string.encode('utf-8')
     
     def create_array(*args):
         num_elements = len(args)
