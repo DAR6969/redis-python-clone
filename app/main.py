@@ -135,7 +135,7 @@ def handleRequest(connection):
                     # length_rdb = len(empty_rdb_base64)
                     empty_rdb_bytes = base64.b64decode(empty_rdb_base64)
                     empty_rdb_binary = RedisProtocolParser.create_bulk_string_bytes(empty_rdb_bytes)
-                    print(empty_rdb_binary, "Dhruv binary 2")
+                    print(empty_rdb_binary, "Dhruv binary 3")
                     connection.send(empty_rdb_binary)
         connection.close()
 
