@@ -50,7 +50,7 @@ class RedisProtocolParser:
         encoded_string = b"${length}\r\n"
         encoded_string += input_bytes
         # encoded_string += "\r\n"
-        return encoded_string.encode()
+        return encoded_string
     
     def create_array(*args):
         num_elements = len(args)
