@@ -47,8 +47,8 @@ class RedisProtocolParser:
     
     def create_bulk_string_bytes(input_bytes):
         length = len(input_bytes)
-        encoded_string = f"${length}\r\n"
-        encoded_string += input_bytes.decode('latin1')  # Decode bytes to string
+        encoded_string = b"${length}\r\n"
+        encoded_string += input_bytes
         # encoded_string += "\r\n"
         return encoded_string.encode()
     
@@ -132,6 +132,7 @@ def handleRequest(connection):
                     connection.send(sync_res.encode())
                     
                     empty_rdb_base64 = "UkVESVMwMDEx+glyZWRpcy12ZXIFNy4yLjD6CnJlZGlzLWJpdHPAQPoFY3RpbWXCbQi8ZfoIdXNlZC1tZW3CsMQQAPoIYW9mLWJhc2XAAP/wbjv+wP9aog=="
+                    # length_rdb = len(empty_rdb_base64)
                     empty_rdb_bytes = base64.b64decode(empty_rdb_base64)
                     empty_rdb_binary = RedisProtocolParser.create_bulk_string_bytes(empty_rdb_bytes)
                     connection.send(empty_rdb_binary)
