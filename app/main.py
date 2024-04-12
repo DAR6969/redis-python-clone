@@ -154,8 +154,9 @@ def handleRequest(connection):
                     received_replica_handshake = True
             print(len(replica_backlog), "dhruv length backlog")
             if(len(replica_backlog) >= 3):
+                print("dhruv inside")
                 for command in replica_backlog:
-                    connection.sendall(command)
+                    connection.send(command)
         connection.close()
 
 def parse_arguments():
