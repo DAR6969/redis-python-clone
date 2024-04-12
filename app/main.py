@@ -96,6 +96,7 @@ def handleRequest(connection):
             elif commands[0][0] == "set" or commands[0][0] == "SET" :
                 get_map[commands[0][1]] = commands[0][2]
                 connection.send(ok.encode())
+                global received_replica_handshake
                 if(received_replica_handshake):
                     rep_command = RedisProtocolParser.create_array(*commands[0])
                     connection.send(rep_command)
