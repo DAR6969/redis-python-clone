@@ -93,6 +93,9 @@ def handleRequest(connection):
             elif commands[0][0] == "set" or commands[0][0] == "SET" :
                 get_map[commands[0][1]] = commands[0][2]
                 connection.send(ok.encode())
+                if(received_replica_handshake):
+                    rep_command = RedisProtocolParser.create_array(*commands[0])
+                    connection.send(rep_command)
                 if(len(commands[0])>3 and commands[0][3] == "px"):
                     print("hello!")
                     key_remove = commands[0][1]
@@ -137,6 +140,8 @@ def handleRequest(connection):
                     empty_rdb_binary = RedisProtocolParser.create_bulk_string_bytes(empty_rdb_bytes)
                     print(empty_rdb_binary, "Dhruv binary 3 new")
                     connection.send(empty_rdb_binary)
+                    global received_replica_handshake
+                    received_replica_handshake = True
         connection.close()
 
 def parse_arguments():
@@ -148,6 +153,7 @@ def parse_arguments():
 
 
 replica_server = False
+received_replica_handshake = False
 
 def main():
     # You can use print statements as follows for debugging, they'll be visible when running tests.
