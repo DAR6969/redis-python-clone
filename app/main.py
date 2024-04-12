@@ -143,7 +143,7 @@ def handleRequest(connection):
                     empty_rdb_binary = RedisProtocolParser.create_bulk_string_bytes(empty_rdb_bytes)
                     print(empty_rdb_binary, "Dhruv binary 3 new")
                     connection.send(empty_rdb_binary)
-                    global received_replica_handshake
+                    # global received_replica_handshake
                     received_replica_handshake = True
         connection.close()
 
