@@ -70,7 +70,8 @@ def remove_key_px(key, delay):
     print(get_map, "dhruv map set 2")
 
 replica_server = False
-global received_replica_handshake = False
+global received_replica_handshake
+received_replica_handshake = False
 
 def handleRequest(connection):
     pong = "+PONG\r\n"
