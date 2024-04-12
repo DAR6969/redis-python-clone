@@ -99,6 +99,7 @@ def handleRequest(connection):
                 global received_replica_handshake
                 if(received_replica_handshake):
                     rep_command = RedisProtocolParser.create_bulk_string(*commands[0])
+                    connection.send(ok.encode())
                     connection.send(rep_command)
                 else: 
                     connection.send(ok.encode())
