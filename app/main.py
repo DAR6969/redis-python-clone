@@ -69,6 +69,8 @@ def remove_key_px(key, delay):
         del get_map[key]
     print(get_map, "dhruv map set 2")
 
+replica_server = False
+received_replica_handshake = False
 
 def handleRequest(connection):
     pong = "+PONG\r\n"
@@ -151,9 +153,6 @@ def parse_arguments():
     
     return parser.parse_args()
 
-
-replica_server = False
-received_replica_handshake = False
 
 def main():
     # You can use print statements as follows for debugging, they'll be visible when running tests.
