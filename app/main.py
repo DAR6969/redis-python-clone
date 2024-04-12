@@ -90,7 +90,7 @@ def handleRequest(connection):
                 response = RedisProtocolParser.encode_redis_bulk_string(commands[0][1])
                 # print(response, "dhruv resp")
                 connection.send(response)
-            elif commands[0][0] == "set":
+            elif commands[0][0] == "set" or commands[0][0] == "SET" :
                 get_map[commands[0][1]] = commands[0][2]
                 connection.send(ok.encode())
                 if(len(commands[0])>3 and commands[0][3] == "px"):
