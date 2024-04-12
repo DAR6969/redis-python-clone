@@ -152,8 +152,8 @@ def handleRequest(connection):
                     connection.send(empty_rdb_binary)
                     # global received_replica_handshake
                     received_replica_handshake = True
-            for command in replica_backlog:
-                connection.sendall(command)
+            # for command in replica_backlog:
+            #     connection.sendall(command)
         connection.close()
 
 def parse_arguments():
