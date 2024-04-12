@@ -72,6 +72,7 @@ def remove_key_px(key, delay):
 replica_server = False
 # global received_replica_handshake
 received_replica_handshake = False
+replica_backlog = []
 
 def handleRequest(connection):
     pong = "+PONG\r\n"
@@ -100,7 +101,9 @@ def handleRequest(connection):
                 if(received_replica_handshake):
                     rep_command = RedisProtocolParser.create_bulk_string(*commands[0])
                     connection.send(ok.encode())
-                    connection.send(rep_command)
+                    # connection.send(rep_command)
+                    global replica_backlog
+                    replica_backlog.append(rep_command)
                 else: 
                     connection.send(ok.encode())
                 if(len(commands[0])>3 and commands[0][3] == "px"):
@@ -149,6 +152,8 @@ def handleRequest(connection):
                     connection.send(empty_rdb_binary)
                     # global received_replica_handshake
                     received_replica_handshake = True
+            for command in replica_backlog:
+                connection.sendall(command)
         connection.close()
 
 def parse_arguments():
