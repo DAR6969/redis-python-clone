@@ -86,7 +86,7 @@ def handleRequest(connection):
             if not data_stream:
                 global replica_backlog
                 if(len(replica_backlog) >= 3):
-                    print("dhruv inside new")   
+                    print("dhruv inside new", len(replica_backlog))   
                     for command in replica_backlog:
                         print(command, "dhruv prop command")
                         connection.send(command)
