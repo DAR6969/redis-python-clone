@@ -84,6 +84,7 @@ def handleRequest(connection):
         while True:
             data_stream = connection.recv(1024)
             if not data_stream:
+                global replica_backlog
                 if(len(replica_backlog) >= 3):
                     print("dhruv inside new")   
                     for command in replica_backlog:
