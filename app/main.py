@@ -84,7 +84,12 @@ def handleRequest(connection):
         while True:
             data_stream = connection.recv(1024)
             if not data_stream:
-                break
+                if(len(replica_backlog) >= 3):
+                    print("dhruv inside new")   
+                    for command in replica_backlog:
+                        print(command, "dhruv prop command")
+                        connection.send(command)
+                # break
             # print(data_stream, "dhruv stream")
             commands = RedisProtocolParser.parse(data_stream)
             print(commands, "dhruv commands")
@@ -153,11 +158,7 @@ def handleRequest(connection):
                     # global received_replica_handshake
                     received_replica_handshake = True
             print(len(replica_backlog), "dhruv length backlog")
-            if(len(replica_backlog) >= 3):
-                print("dhruv inside new")   
-                for command in replica_backlog:
-                    print(command, "dhruv prop command")
-                    connection.send(command)
+            
         connection.close()
 
 def parse_arguments():
