@@ -89,7 +89,7 @@ def handleRequest(connection):
                     print("dhruv inside new", len(replica_backlog))   
                     for command in replica_backlog:
                         print(command, "dhruv prop command")
-                        connection.send(command)
+                        # connection.send(command)
                 break
             # print(data_stream, "dhruv stream")
             commands = RedisProtocolParser.parse(data_stream)
