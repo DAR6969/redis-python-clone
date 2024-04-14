@@ -108,7 +108,7 @@ def handleRequest(connection):
                     rep_command = RedisProtocolParser.create_bulk_string(*commands[0])
                     connection.send(ok.encode())
                     # connection.send(rep_command)
-                    global replica_backlog
+                    # global replica_backlog
                     replica_backlog.append(rep_command)
                 else: 
                     connection.send(ok.encode())
