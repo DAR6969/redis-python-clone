@@ -117,7 +117,7 @@ def handleRequest(connection, address):
                     # global replica_backlog
                     if len(slaves) > 0:
                         for address in slaves.keys():
-                            if(slave[str(address)]["connected"]):
+                            if(slaves[str(address)]["connected"]):
                                 try:
                                     print("propogating comm to slave")
                                     slaves[str(address)]["connection"].sendall(rep_command)
