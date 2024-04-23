@@ -89,7 +89,7 @@ def handleRequest(connection):
                     print("dhruv inside new", len(replica_backlog))   
                     for command in replica_backlog:
                         print(command, "dhruv prop command")
-                        # connection.send(command)
+                        connection.send(command)
                 break
             # print(data_stream, "dhruv stream")
             commands = RedisProtocolParser.parse(data_stream)
@@ -128,10 +128,10 @@ def handleRequest(connection):
                 connection.send(response) 
             elif commands[0][0] == "INFO":
                 if replica_server:
-                    print("replicate comm sent")
+                    print("replicate comm recieved")
                     connection.send("$10\r\nrole:slave\r\n".encode())    
                 else:
-                    print("master comm sent")
+                    print("master comm received")
                     role=f"role:master"
                     master_replid = f"master_replid:8371b4fb1155b71f4a04d3e1bc3e18c4a990aeeb"
                     master_repl_offset = f"master_repl_offset:0"
@@ -214,7 +214,7 @@ def main():
         print(f"{response.decode()}, dhruv replica socket response from master 3")
         sock.send(RedisProtocolParser.create_array(*psync.split()))
         response = sock.recv(1024)
-        # print(f"{response.decode()}")
+        print(f"{response.decode()}, dhruv replica socket response from master 4")
     
     while True:
         connection, address = server_socket.accept()
