@@ -120,7 +120,7 @@ def handleRequest(connection, address):
                             if(slaves[str(address)]["connected"]):
                                 try:
                                     print("propogating comm to slave")
-                                    print(slaves.connection, "druv slave connection")
+                                    print(slaves, "druv slave list")
                                     print(connection, "dhruv connection actual")
                                     slaves[str(address)]["connection"].sendall(rep_command)
                                 except Exception as e:
