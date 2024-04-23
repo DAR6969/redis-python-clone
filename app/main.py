@@ -121,7 +121,7 @@ def handleRequest(connection, address):
                                 try:
                                     print("propogating comm to slave")
                                     print(slaves, "druv slave list")
-                                    print(connection, "dhruv connection actual")
+                                    # print(connection, "dhruv connection actual")
                                     slaves[str(address)]["connection"].sendall(rep_command)
                                 except Exception as e:
                                     print("Error:", e)
@@ -138,6 +138,22 @@ def handleRequest(connection, address):
                 print(get_map, "dhruv map set")
             elif commands[0][0] == "get":
                 print(get_map, "dhruv map get")
+                #propogate to slaves
+                if(received_replica_handshake):
+                    rep_command = RedisProtocolParser.create_array(*commands[0])
+                    connection.send(ok.encode())
+                    # connection.send(rep_command)
+                    # global replica_backlog
+                    if len(slaves) > 0:
+                        for address in slaves.keys():
+                            if(slaves[str(address)]["connected"]):
+                                try:
+                                    print("propogating comm to slave")
+                                    print(slaves, "druv slave list")
+                                    print(connection, "dhruv connection actual")
+                                    slaves[str(address)]["connection"].sendall(rep_command)
+                                except Exception as e:
+                                    print("Error:", e)
                 if commands[0][1] in get_map:
                     response = RedisProtocolParser.encode_redis_bulk_string(get_map[commands[0][1]])
                 else:
@@ -173,7 +189,7 @@ def handleRequest(connection, address):
                     master_replid = f"8371b4fb1155b71f4a04d3e1bc3e18c4a990aeeb"
                     sync_res = "+FULLRESYNC " + master_replid + " 0\r\n"
                     connection.send(sync_res.encode())
-                    print(address, "address")
+                    # print(address, "address")
                     slaves[str(address)]["connected"] = True
                     
                     empty_rdb_base64 = "UkVESVMwMDEx+glyZWRpcy12ZXIFNy4yLjD6CnJlZGlzLWJpdHPAQPoFY3RpbWXCbQi8ZfoIdXNlZC1tZW3CsMQQAPoIYW9mLWJhc2XAAP/wbjv+wP9aog=="
@@ -244,8 +260,6 @@ def main():
     # server_socket.accept() # wait for client
     while True:
         connection, address = server_socket.accept()
-        print(address, "initial address")
-        print("connection received to server")
         t1 = threading.Thread(target=handleRequest, args=(connection, address),name="t1")
         t1.start()
     t1.join()
