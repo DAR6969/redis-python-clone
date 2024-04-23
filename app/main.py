@@ -244,6 +244,7 @@ def main():
     # server_socket.accept() # wait for client
     while True:
         connection, address = server_socket.accept()
+        print(address, "initial address")
         print("connection received to server")
         t1 = threading.Thread(target=handleRequest, args=(connection, address),name="t1")
         t1.start()
