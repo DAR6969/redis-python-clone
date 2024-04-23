@@ -172,7 +172,7 @@ def handleRequest(connection, address):
                     sync_res = "+FULLRESYNC " + master_replid + " 0\r\n"
                     connection.send(sync_res.encode())
                     print(address, "address")
-                    slaves[str(address)][connected] = True
+                    slaves[str(address)]["connected"] = True
                     
                     empty_rdb_base64 = "UkVESVMwMDEx+glyZWRpcy12ZXIFNy4yLjD6CnJlZGlzLWJpdHPAQPoFY3RpbWXCbQi8ZfoIdXNlZC1tZW3CsMQQAPoIYW9mLWJhc2XAAP/wbjv+wP9aog=="
                     # length_rdb = len(empty_rdb_base64)
