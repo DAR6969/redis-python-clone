@@ -89,13 +89,13 @@ def handleRequest(connection, address):
             global replica_backlog
             global slaves
             if not data_stream:
-                if(len(replica_backlog) >= 3):
-                # if(len(slaves) > 0):
+                # if(len(replica_backlog) >= 3):
+                # # if(len(slaves) > 0):
                     
-                    print("dhruv inside new", len(replica_backlog))   
-                    for command in replica_backlog:
-                        print(command, "dhruv prop command")
-                        connection.send(command)
+                #     print("dhruv inside new", len(replica_backlog))   
+                #     for command in replica_backlog:
+                #         print(command, "dhruv prop command")
+                #         connection.send(command)
                 break
             # print(data_stream, "dhruv stream")
             commands = RedisProtocolParser.parse(data_stream)
