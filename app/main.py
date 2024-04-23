@@ -72,9 +72,11 @@ def remove_key_px(key, delay):
 replica_server = False
 # global received_replica_handshake
 received_replica_handshake = False
+replica_port = ""
 replica_backlog = []
+slaves = {}
 
-def handleRequest(connection):
+def handleRequest(connection, address):
     pong = "+PONG\r\n"
     ok = "+OK\r\n"
     null_bulk = "$-1\r\n"
@@ -83,14 +85,17 @@ def handleRequest(connection):
     with connection:
         while True:
             data_stream = connection.recv(1024)
+            global replica_port
             global replica_backlog
+            global slaves
             if not data_stream:
-                # global replica_backlog
-                # if(len(replica_backlog) >= 3):
-                #     print("dhruv inside new", len(replica_backlog))   
-                #     for command in replica_backlog:
-                #         print(command, "dhruv prop command")
-                #         connection.send(command)
+                if(len(replica_backlog) >= 3):
+                # if(len(slaves) > 0):
+                    
+                    print("dhruv inside new", len(replica_backlog))   
+                    for command in replica_backlog:
+                        print(command, "dhruv prop command")
+                        connection.send(command)
                 break
             # print(data_stream, "dhruv stream")
             commands = RedisProtocolParser.parse(data_stream)
@@ -110,6 +115,15 @@ def handleRequest(connection):
                     connection.send(ok.encode())
                     # connection.send(rep_command)
                     # global replica_backlog
+                    if len(slaves) > 0:
+                        for address in slave.keys():
+                            if(slave[str(address)]["connected"]):
+                                try:
+                                    print("propogating comm to slave")
+                                    slaves[str(address)]["connection"].sendall(rep_command)
+                                except Exception as e:
+                                    print("Error:", e)
+                                    
                     replica_backlog.append(rep_command)
                 else: 
                     connection.send(ok.encode())
@@ -144,12 +158,20 @@ def handleRequest(connection):
                     # connection.send("$11\r\nrole:master\r\n".encode())
             elif commands[0][0] == "REPLCONF":   
                 ok_response = "+OK\r\n"
+                if(commands[0][1] == "listening-port"):
+                    replica_port = commands[0][2]
+                    slaves[str(address)] = {
+                        "port": replica_port,
+                        "connection": connection,
+                        "connected": False,
+                    }
                 connection.send(ok_response.encode())
             elif commands[0][0] == "PSYNC":
                 if not replica_server:
                     master_replid = f"8371b4fb1155b71f4a04d3e1bc3e18c4a990aeeb"
                     sync_res = "+FULLRESYNC " + master_replid + " 0\r\n"
                     connection.send(sync_res.encode())
+                    slaves[address][connected] = True
                     
                     empty_rdb_base64 = "UkVESVMwMDEx+glyZWRpcy12ZXIFNy4yLjD6CnJlZGlzLWJpdHPAQPoFY3RpbWXCbQi8ZfoIdXNlZC1tZW3CsMQQAPoIYW9mLWJhc2XAAP/wbjv+wP9aog=="
                     # length_rdb = len(empty_rdb_base64)
@@ -160,12 +182,6 @@ def handleRequest(connection):
                     # global received_replica_handshake
                     received_replica_handshake = True
             print(len(replica_backlog), "dhruv length backlog new 1")
-            
-            if(len(replica_backlog) >= 3):
-                print("dhruv inside new", len(replica_backlog))   
-                for command in replica_backlog:
-                    print(command, "dhruv prop command")
-                    connection.send(command)
             
         connection.close()
 
@@ -200,8 +216,6 @@ def main():
         port = 6379
         print("Port number not specified.")
         
-    server_socket = socket.create_server(("localhost", port), reuse_port=True)
-    # server_socket.accept() # wait for client
     if master is not None:
         ping = "PING"
         REPLCONF_port = "REPLCONF listening-port " + str(args.port)
@@ -223,11 +237,12 @@ def main():
         response = sock.recv(1024)
         # print(f"{response.decode()}, dhruv replica socket response from master 4")
     
+    server_socket = socket.create_server(("localhost", port), reuse_port=True)
+    # server_socket.accept() # wait for client
     while True:
         connection, address = server_socket.accept()
         print("connection received to server")
-        t1 = threading.Thread(target=handleRequest, args=(connection,),name="t1")
-        
+        t1 = threading.Thread(target=handleRequest, args=(connection, address),name="t1")
         t1.start()
     t1.join()
 
