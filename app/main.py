@@ -158,7 +158,7 @@ def handleRequest(connection):
                     connection.send(empty_rdb_binary)
                     # global received_replica_handshake
                     received_replica_handshake = True
-            print(len(replica_backlog), "dhruv length backlog new")
+            print(len(replica_backlog), "dhruv length backlog new 1")
             
         connection.close()
 
