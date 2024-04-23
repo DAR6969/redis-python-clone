@@ -83,6 +83,7 @@ def handleRequest(connection):
     with connection:
         while True:
             data_stream = connection.recv(1024)
+            global replica_backlog
             if not data_stream:
                 # global replica_backlog
                 # if(len(replica_backlog) >= 3):
@@ -159,7 +160,7 @@ def handleRequest(connection):
                     # global received_replica_handshake
                     received_replica_handshake = True
             print(len(replica_backlog), "dhruv length backlog new 1")
-            global replica_backlog
+            
             if(len(replica_backlog) >= 3):
                 print("dhruv inside new", len(replica_backlog))   
                 for command in replica_backlog:
