@@ -224,7 +224,7 @@ def main():
         global replica_server
         replica_server = True
     print(master, "dhruv masters")
-    master = master.split()
+    master = master[0].split()
     print(replica_server, "dhruv replica")
         
 
