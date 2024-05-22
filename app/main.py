@@ -233,7 +233,7 @@ def main():
         print(f"Port number: {port}")
     else:
         port = 6379
-        print("Port number not specified..")
+        print("Port number not specified.")
         
     if master is not None:
         ping = "PING"
