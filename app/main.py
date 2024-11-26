@@ -259,7 +259,7 @@ def main():
         print(f"{response.decode()}, dhruv new replica socket response from master 3")
         sock.send(RedisProtocolParser.create_array(*psync.split()))
         response = sock.recv(1024)
-        print(f"{response.decode()}, dhruv new replica socket response from master 4")
+        # print(f"{response.decode()}, dhruv new replica socket response from master 4")
     
     server_socket = socket.create_server(("localhost", port), reuse_port=True)
     # server_socket.accept() # wait for client
