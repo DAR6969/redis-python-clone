@@ -230,18 +230,18 @@ def main():
 
     # Extract and print flag values if provided
     if args.port is not None:
-        port = args.port
-        print(f"Port number: {port}")
+        my_local_port = args.port
+        print(f"Port number: {my_local_port}")
     else:
-        port = 6379
+        my_local_port = 6379
         print("Port number not specified.")
         
     if master is not None:
         ping = "PING"
-        REPLCONF_port = "REPLCONF listening-port " + str(args.port)
+        REPLCONF_port = "REPLCONF listening-port " + str(my_local_port)
         REPLCONF_capa = "REPLCONF capa psync2"
         psync = "PSYNC ? -1"
-        # handshake_messages = ["PING", "REPLCONF listening-port <PORT>"]
+        # create a socket endpoint and connect to the master that is created somewhere else
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.connect((master[0], int(master[1])))
         sock.send(RedisProtocolParser.create_array(ping))
@@ -261,8 +261,9 @@ def main():
         response = sock.recv(1024)
         # print(f"{response.decode()}, dhruv new replica socket response from master 4")
     
-    server_socket = socket.create_server(("localhost", port), reuse_port=True)
-    # server_socket.accept() # wait for client
+    # create my own server (I could be master or replica) 
+    # that will listen to connections from clients (could be replicas or other clients)
+    server_socket = socket.create_server(("localhost", my_local_port), reuse_port=True)
     while True:
         connection, address = server_socket.accept()
         t1 = threading.Thread(target=handleRequest, args=(connection, address),name="t1")
