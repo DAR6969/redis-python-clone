@@ -236,6 +236,7 @@ def main():
         global replica_server
         replica_server = True
         master = master[0].split()
+        print(master)
         common_tools.set_master_addr(master[0], master[1])
         print(master, "dhruv masters")
         print(replica_server, "dhruv replica")
