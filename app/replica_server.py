@@ -30,6 +30,7 @@ class ReplicaServer:
         self.listen_to_master()
         
     def listen_to_master(self):
+        print("hello")
         while True:
             try:
                 msg = self.sock.recv(1024)
