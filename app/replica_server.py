@@ -28,7 +28,7 @@ class ReplicaServer:
         
         self.sock.send(RedisProtocolParser.create_array(*common_tools.psync.split()))
         response = self.sock.recv(1024)
-        print("connection done on replica")
+        print(response, "connection done on replica")
         
         self.listen_to_master()
         
