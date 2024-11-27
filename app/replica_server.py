@@ -6,8 +6,16 @@ from app.RedisParser import RedisProtocolParser
 class ReplicaServer:
     
     def __init__(self) -> None:
-        common_tools = CommonTools()
         # create a self.socket endpoint and connect to the master that is created somewhere else
+        
+        # response = self.sock.recv(1024)
+        # print(response, "connection done on replica")
+        
+        self.listen_to_master()
+        
+    def listen_to_master(self):
+        common_tools = CommonTools()
+        print("hello")
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.sock.connect((common_tools.master_host, common_tools.master_port))
         
@@ -27,13 +35,7 @@ class ReplicaServer:
         print(f"{response.decode()}, dhruv new replica self.socket response from master 3")
         
         self.sock.send(RedisProtocolParser.create_array(*common_tools.psync.split()))
-        # response = self.sock.recv(1024)
-        # print(response, "connection done on replica")
         
-        self.listen_to_master()
-        
-    def listen_to_master(self):
-        print("hello")
         while True:
             try:
                 msg = self.sock.recv(1024)
