@@ -1,12 +1,14 @@
 class CommonTools:
+    my_local_port = ""
+    ping = "PING"
+    REPLCONF_port = "REPLCONF listening-port "
+    REPLCONF_capa = "REPLCONF capa psync2"
+    psync = "PSYNC ? -1"
+    master_host = ""
+    master_port = 0
+        
     def __init__(self) -> None:
-        my_local_port = ""
-        ping = "PING"
-        REPLCONF_port = "REPLCONF listening-port "
-        REPLCONF_capa = "REPLCONF capa psync2"
-        psync = "PSYNC ? -1"
-        master_host = ""
-        master_port = 0
+        pass
 
     def set_my_port(self, port):
         CommonTools.my_local_port = str(port)
