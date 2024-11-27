@@ -10,6 +10,8 @@ class ReplicaServer:
         # create a self.socket endpoint and connect to the master that is created somewhere else
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.sock.connect((common_tools.master_host, common_tools.master_port))
+        
+        print("dhruv new socket connected")
         self.sock.send(RedisProtocolParser.create_array(common_tools.ping))
         
         
