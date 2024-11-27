@@ -251,30 +251,30 @@ def main():
         print("Port number not specified, going with 6379.")
         
     if master is not None:
-        ping = "PING"
-        REPLCONF_port = "REPLCONF listening-port " + str(common_tools.my_local_port)
-        REPLCONF_capa = "REPLCONF capa psync2"
-        psync = "PSYNC ? -1"
-        # create a socket endpoint and connect to the master that is created somewhere else
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        sock.connect((master[0], int(master[1])))
-        sock.send(RedisProtocolParser.create_array(ping))
-        print("Before recv")
-        response = sock.recv(1024)
-        print("After recv")
-        print(f"{response.decode()}, dhruv new replica socket response from master 1")
-        print("Before send")
-        sock.send(RedisProtocolParser.create_array(*REPLCONF_port.split()))
-        print("After send")
-        response = sock.recv(1024)
-        print(f"{response.decode()}, dhruv new replica socket response from master 2")
-        sock.send(RedisProtocolParser.create_array(*REPLCONF_capa.split()))
-        response = sock.recv(1024)
-        print(f"{response.decode()}, dhruv new replica socket response from master 3")
-        sock.send(RedisProtocolParser.create_array(*psync.split()))
-        response = sock.recv(1024)
+        # ping = "PING"
+        # REPLCONF_port = "REPLCONF listening-port " + str(common_tools.my_local_port)
+        # REPLCONF_capa = "REPLCONF capa psync2"
+        # psync = "PSYNC ? -1"
+        # # create a socket endpoint and connect to the master that is created somewhere else
+        # sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        # sock.connect((master[0], int(master[1])))
+        # sock.send(RedisProtocolParser.create_array(ping))
+        # print("Before recv")
+        # response = sock.recv(1024)
+        # print("After recv")
+        # print(f"{response.decode()}, dhruv new replica socket response from master 1")
+        # print("Before send")
+        # sock.send(RedisProtocolParser.create_array(*REPLCONF_port.split()))
+        # print("After send")
+        # response = sock.recv(1024)
+        # print(f"{response.decode()}, dhruv new replica socket response from master 2")
+        # sock.send(RedisProtocolParser.create_array(*REPLCONF_capa.split()))
+        # response = sock.recv(1024)
+        # print(f"{response.decode()}, dhruv new replica socket response from master 3")
+        # sock.send(RedisProtocolParser.create_array(*psync.split()))
+        # response = sock.recv(1024)
         
-        # new_replica = ReplicaServer()
+        new_replica = ReplicaServer()
         
         # print(f"{response.decode()}, dhruv new replica socket response from master 4")
     
