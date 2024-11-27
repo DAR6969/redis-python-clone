@@ -5,64 +5,71 @@ import time
 import argparse 
 import base64
 
-from common import CommonTools
-from replica_server import ReplicaServer
+import os
+import sys
 
-class RedisProtocolParser:
-    @staticmethod
-    def parse(data):
-        commands = data.decode().split('\r\n')[:-1]
-        print(commands, "dhruv function commands")
-        parsed_commands = []
-        if len(commands) == 3 and commands[0] == '*1' and commands[1].startswith('$'):
-            arg_len = int(commands[1][1:])
-            arg = commands[2][:arg_len]
-            parsed_commands.append(arg)
-        else:    
-            commands_copy = commands.copy()
-            for cmd in commands_copy:
-                if cmd.startswith('*'):
-                    num_args = int(cmd[1:])
-                    parsed_args = []
-                    commands.pop(0)
-                    for _ in range(num_args):
-                        cmd_new = commands.pop(0)
-                        # print(cmd_new, "dhruv new")
-                        # print(commands, "dhruv commads pop 1")
-                        arg_len = int(cmd_new[1:])
-                        arg = commands.pop(0)[:arg_len]
-                        # print(commands, "dhruv commads pop 2")
-                        # print(arg, "dhruv arg")
-                        parsed_args.append(arg)
-                    parsed_commands.append(parsed_args)
-        return parsed_commands
+print("Current Working Directory:", os.getcwd())
+print("Python Path:", sys.path)
+
+from app.common_file import CommonTools
+from app.replica_server import ReplicaServer
+from app.RedisParser import RedisProtocolParser
+
+# class RedisProtocolParser:
+#     @staticmethod
+#     def parse(data):
+#         commands = data.decode().split('\r\n')[:-1]
+#         print(commands, "dhruv function commands")
+#         parsed_commands = []
+#         if len(commands) == 3 and commands[0] == '*1' and commands[1].startswith('$'):
+#             arg_len = int(commands[1][1:])
+#             arg = commands[2][:arg_len]
+#             parsed_commands.append(arg)
+#         else:    
+#             commands_copy = commands.copy()
+#             for cmd in commands_copy:
+#                 if cmd.startswith('*'):
+#                     num_args = int(cmd[1:])
+#                     parsed_args = []
+#                     commands.pop(0)
+#                     for _ in range(num_args):
+#                         cmd_new = commands.pop(0)
+#                         # print(cmd_new, "dhruv new")
+#                         # print(commands, "dhruv commads pop 1")
+#                         arg_len = int(cmd_new[1:])
+#                         arg = commands.pop(0)[:arg_len]
+#                         # print(commands, "dhruv commads pop 2")
+#                         # print(arg, "dhruv arg")
+#                         parsed_args.append(arg)
+#                     parsed_commands.append(parsed_args)
+#         return parsed_commands
     
-    def encode_redis_bulk_string(input_string):
-        # Prefix the string with the length of the string and add the CRLF delimiter
-        encoded_string = f"${len(input_string)}\r\n{input_string}\r\n"
-        return encoded_string.encode()
+#     def encode_redis_bulk_string(input_string):
+#         # Prefix the string with the length of the string and add the CRLF delimiter
+#         encoded_string = f"${len(input_string)}\r\n{input_string}\r\n"
+#         return encoded_string.encode()
     
-    def create_bulk_string(*args):
-        bulk_string = ""
-        for arg in args:
-            bulk_string += f"${len(str(arg))}\r\n{arg}\r\n"
-        return bulk_string.encode()
+#     def create_bulk_string(*args):
+#         bulk_string = ""
+#         for arg in args:
+#             bulk_string += f"${len(str(arg))}\r\n{arg}\r\n"
+#         return bulk_string.encode()
     
-    def create_bulk_string_bytes(input_bytes):
-        length = len(input_bytes)
-        encoded_string = f"${length}\r\n".encode()
-        encoded_string += input_bytes
-        # encoded_string += "\r\n"
-        return encoded_string
+#     def create_bulk_string_bytes(input_bytes):
+#         length = len(input_bytes)
+#         encoded_string = f"${length}\r\n".encode()
+#         encoded_string += input_bytes
+#         # encoded_string += "\r\n"
+#         return encoded_string
     
-    def create_array(*args):
-        num_elements = len(args)
-        array_string = f"*{num_elements}\r\n"
-        for arg in args:
-            if isinstance(arg, int):
-                arg = str(arg)
-            array_string += f"${len(arg)}\r\n{arg}\r\n"
-        return array_string.encode()
+#     def create_array(*args):
+#         num_elements = len(args)
+#         array_string = f"*{num_elements}\r\n"
+#         for arg in args:
+#             if isinstance(arg, int):
+#                 arg = str(arg)
+#             array_string += f"${len(arg)}\r\n{arg}\r\n"
+#         return array_string.encode()
 
 get_map = {}
 
@@ -228,10 +235,10 @@ def main():
     if master is not None:
         global replica_server
         replica_server = True
-    print(master, "dhruv masters")
-    master = master[0].split()
-    common_tools.set_master_addr(master[0], master[1])
-    print(replica_server, "dhruv replica")
+        master = master[0].split()
+        common_tools.set_master_addr(master[0], master[1])
+        print(master, "dhruv masters")
+        print(replica_server, "dhruv replica")
         
 
     # Extract and print flag values if provided
@@ -244,36 +251,36 @@ def main():
         print("Port number not specified, going with 6379.")
         
     if master is not None:
-        # ping = "PING"
-        # REPLCONF_port = "REPLCONF listening-port " + str(common_tools.my_local_port)
-        # REPLCONF_capa = "REPLCONF capa psync2"
-        # psync = "PSYNC ? -1"
-        # # create a socket endpoint and connect to the master that is created somewhere else
-        # sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        # sock.connect((master[0], int(master[1])))
-        # sock.send(RedisProtocolParser.create_array(ping))
-        # print("Before recv")
-        # response = sock.recv(1024)
-        # print("After recv")
-        # print(f"{response.decode()}, dhruv new replica socket response from master 1")
-        # print("Before send")
-        # sock.send(RedisProtocolParser.create_array(*REPLCONF_port.split()))
-        # print("After send")
-        # response = sock.recv(1024)
-        # print(f"{response.decode()}, dhruv new replica socket response from master 2")
-        # sock.send(RedisProtocolParser.create_array(*REPLCONF_capa.split()))
-        # response = sock.recv(1024)
-        # print(f"{response.decode()}, dhruv new replica socket response from master 3")
-        # sock.send(RedisProtocolParser.create_array(*psync.split()))
-        # response = sock.recv(1024)
+        ping = "PING"
+        REPLCONF_port = "REPLCONF listening-port " + str(common_tools.my_local_port)
+        REPLCONF_capa = "REPLCONF capa psync2"
+        psync = "PSYNC ? -1"
+        # create a socket endpoint and connect to the master that is created somewhere else
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.connect((master[0], int(master[1])))
+        sock.send(RedisProtocolParser.create_array(ping))
+        print("Before recv")
+        response = sock.recv(1024)
+        print("After recv")
+        print(f"{response.decode()}, dhruv new replica socket response from master 1")
+        print("Before send")
+        sock.send(RedisProtocolParser.create_array(*REPLCONF_port.split()))
+        print("After send")
+        response = sock.recv(1024)
+        print(f"{response.decode()}, dhruv new replica socket response from master 2")
+        sock.send(RedisProtocolParser.create_array(*REPLCONF_capa.split()))
+        response = sock.recv(1024)
+        print(f"{response.decode()}, dhruv new replica socket response from master 3")
+        sock.send(RedisProtocolParser.create_array(*psync.split()))
+        response = sock.recv(1024)
         
-        new_replica = ReplicaServer()
+        # new_replica = ReplicaServer()
         
         # print(f"{response.decode()}, dhruv new replica socket response from master 4")
     
     # create my own server (I could be master or replica) 
     # that will listen to connections from clients (could be replicas or other clients)
-    server_socket = socket.create_server(("localhost", common_tools.my_local_port), reuse_port=True)
+    server_socket = socket.create_server(("localhost", int(common_tools.my_local_port)), reuse_port=True)
     while True:
         connection, address = server_socket.accept()
         t1 = threading.Thread(target=handleRequest, args=(connection, address),name="t1")

@@ -18,6 +18,7 @@ class CommonTools:
     def set_master_addr(self, host, port):
         self.master_host = host
         self.master_port = int(port)
+
     
     
     

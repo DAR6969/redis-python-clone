@@ -1,7 +1,7 @@
 import socket
 
-from common import CommonTools
-from RedisParser import RedisProtocolParser
+from app.common_file import CommonTools
+from app.RedisParser import RedisProtocolParser
 
 class ReplicaServer:
     
