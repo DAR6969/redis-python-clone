@@ -41,9 +41,9 @@ class ReplicaServer:
                 msg = self.sock.recv(1024)
                 print(msg, "master rdb file msg")
                 # print(RedisProtocolParser.parse(msg), "master sent message")
-                if not msg:
-                    print("Connection closed by the master")
-                    break
+                # if not msg:
+                #     print("Connection closed by the master")
+                #     break
                 print(f"Received Message from master")
             except Exception as e:
                 print(f"Error while receiving message on replicaY: {e}")
