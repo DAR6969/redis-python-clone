@@ -6,7 +6,7 @@ class CommonTools:
         self.REPLCONF_capa = "REPLCONF capa psync2"
         self.psync = "PSYNC ? -1"
         self.master_host = ""
-        self.master_port = ""
+        self.master_port = 0
 
     def set_my_port(self, port):
         self.my_local_port = str(port)
