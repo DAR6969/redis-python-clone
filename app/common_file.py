@@ -9,15 +9,15 @@ class CommonTools:
         master_port = 0
 
     def set_my_port(self, port):
-        self.my_local_port = str(port)
+        CommonTools.my_local_port = str(port)
         self.set_REPLCONF_port()
         
     def set_REPLCONF_port(self):
-        self.REPLCONF_port += self.my_local_port
+        CommonTools.REPLCONF_port += CommonTools.my_local_port
     
     def set_master_addr(self, host, port):
-        self.master_host = host
-        self.master_port = int(port)
+        CommonTools.master_host = host
+        CommonTools.master_port = int(port)
 
     
     
