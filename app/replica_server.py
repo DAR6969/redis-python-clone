@@ -8,7 +8,7 @@ class ReplicaServer:
     def __init__(self) -> None:
         common_tools = CommonTools()
         # create a self.socket endpoint and connect to the master that is created somewhere else
-        self.self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.sock.connect((common_tools.master_host, common_tools.master_port))
         self.sock.send(RedisProtocolParser.create_array(common_tools.ping))
         
