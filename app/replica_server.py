@@ -35,12 +35,18 @@ class ReplicaServer:
         print(f"{response.decode()}, dhruv new replica self.socket response from master 3")
         
         self.sock.send(RedisProtocolParser.create_array(*common_tools.psync.split()))
+        # full resync
+        response = self.sock.recv(1024)
+        print(response, "master rdb response")
+        
+        # rdb file
+        msg = self.sock.recv(1024)
+        print(response, "master full rdb file")
         
         while True:
             try:
                 msg = self.sock.recv(1024)
-                print(msg, "master rdb file msg")
-                # print(RedisProtocolParser.parse(msg), "master sent message")
+                print(RedisProtocolParser.parse(msg), "master sent message")
                 if not msg:
                     print("Connection closed by the master")
                     break
