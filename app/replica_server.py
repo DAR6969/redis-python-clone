@@ -28,6 +28,7 @@ class ReplicaServer:
         
         self.sock.send(RedisProtocolParser.create_array(*common_tools.psync.split()))
         response = self.sock.recv(1024)
+        print("connection done on replica")
         
         self.listen_to_master()
         
@@ -42,5 +43,5 @@ class ReplicaServer:
                     break
                 print(f"Received Message from master")
             except Exception as e:
-                print(f"Error while receiving message: {e}")
+                print(f"Error while receiving message on replicaY: {e}")
                 break
