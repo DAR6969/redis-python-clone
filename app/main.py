@@ -5,8 +5,8 @@ import time
 import argparse 
 import base64
 
-from common import CommonTools
-from replica_server import ReplicaServer
+from .common import CommonTools
+from .replica_server import ReplicaServer
 
 class RedisProtocolParser:
     @staticmethod
