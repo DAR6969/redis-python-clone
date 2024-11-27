@@ -40,7 +40,7 @@ class ReplicaServer:
         print(response, "master rdb response")
         
         # rdb file
-        msg = self.sock.recv(1024)
+        response = self.sock.recv(1024)
         print(response, "master full rdb file")
         
         while True:
