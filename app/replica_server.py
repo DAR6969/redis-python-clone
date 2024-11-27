@@ -34,7 +34,7 @@ class ReplicaServer:
         while True:
             try:
                 msg = self.sock.recv(1024)
-                print(msg, "master sent message")
+                print(RedisProtocolParser(msg), "master sent message")
                 if not msg:
                     print("Connection closed by the master")
                     break
