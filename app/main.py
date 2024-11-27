@@ -5,11 +5,14 @@ import time
 import argparse 
 import base64
 
+from common import CommonTools
+from replica_server import ReplicaServer
+
 class RedisProtocolParser:
     @staticmethod
     def parse(data):
         commands = data.decode().split('\r\n')[:-1]
-        # print(commands, "dhruv function commands")
+        print(commands, "dhruv function commands")
         parsed_commands = []
         if len(commands) == 3 and commands[0] == '*1' and commands[1].startswith('$'):
             arg_len = int(commands[1][1:])
@@ -215,6 +218,8 @@ def parse_arguments():
 def main():
     # You can use print statements as follows for debugging, they'll be visible when running tests.
     print("Logs from your program will appear here!")
+    
+    common_tools = CommonTools()
 
     # Uncomment this to pass the first stage
     #
@@ -225,45 +230,50 @@ def main():
         replica_server = True
     print(master, "dhruv masters")
     master = master[0].split()
+    common_tools.set_master_addr(master[0], master[1])
     print(replica_server, "dhruv replica")
         
 
     # Extract and print flag values if provided
+    # assign port based on replica or master 
     if args.port is not None:
-        my_local_port = args.port
-        print(f"Port number: {my_local_port}")
+        common_tools.set_my_port(args.port)
+        print(f"Port number: {common_tools.my_local_port}")
     else:
-        my_local_port = 6379
-        print("Port number not specified.")
+        common_tools.set_my_port(6379)
+        print("Port number not specified, going with 6379.")
         
     if master is not None:
-        ping = "PING"
-        REPLCONF_port = "REPLCONF listening-port " + str(my_local_port)
-        REPLCONF_capa = "REPLCONF capa psync2"
-        psync = "PSYNC ? -1"
-        # create a socket endpoint and connect to the master that is created somewhere else
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        sock.connect((master[0], int(master[1])))
-        sock.send(RedisProtocolParser.create_array(ping))
-        print("Before recv")
-        response = sock.recv(1024)
-        print("After recv")
-        print(f"{response.decode()}, dhruv new replica socket response from master 1")
-        print("Before send")
-        sock.send(RedisProtocolParser.create_array(*REPLCONF_port.split()))
-        print("After send")
-        response = sock.recv(1024)
-        print(f"{response.decode()}, dhruv new replica socket response from master 2")
-        sock.send(RedisProtocolParser.create_array(*REPLCONF_capa.split()))
-        response = sock.recv(1024)
-        print(f"{response.decode()}, dhruv new replica socket response from master 3")
-        sock.send(RedisProtocolParser.create_array(*psync.split()))
-        response = sock.recv(1024)
+        # ping = "PING"
+        # REPLCONF_port = "REPLCONF listening-port " + str(common_tools.my_local_port)
+        # REPLCONF_capa = "REPLCONF capa psync2"
+        # psync = "PSYNC ? -1"
+        # # create a socket endpoint and connect to the master that is created somewhere else
+        # sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        # sock.connect((master[0], int(master[1])))
+        # sock.send(RedisProtocolParser.create_array(ping))
+        # print("Before recv")
+        # response = sock.recv(1024)
+        # print("After recv")
+        # print(f"{response.decode()}, dhruv new replica socket response from master 1")
+        # print("Before send")
+        # sock.send(RedisProtocolParser.create_array(*REPLCONF_port.split()))
+        # print("After send")
+        # response = sock.recv(1024)
+        # print(f"{response.decode()}, dhruv new replica socket response from master 2")
+        # sock.send(RedisProtocolParser.create_array(*REPLCONF_capa.split()))
+        # response = sock.recv(1024)
+        # print(f"{response.decode()}, dhruv new replica socket response from master 3")
+        # sock.send(RedisProtocolParser.create_array(*psync.split()))
+        # response = sock.recv(1024)
+        
+        new_replica = ReplicaServer()
+        
         # print(f"{response.decode()}, dhruv new replica socket response from master 4")
     
     # create my own server (I could be master or replica) 
     # that will listen to connections from clients (could be replicas or other clients)
-    server_socket = socket.create_server(("localhost", my_local_port), reuse_port=True)
+    server_socket = socket.create_server(("localhost", common_tools.my_local_port), reuse_port=True)
     while True:
         connection, address = server_socket.accept()
         t1 = threading.Thread(target=handleRequest, args=(connection, address),name="t1")
