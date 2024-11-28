@@ -31,26 +31,32 @@ class RedisProtocolParser:
         return parsed_commands
     
     def find_command_end(self):
-        command_start = self.buffer.find(b'*')
-        if command_start == '-1':
-            print("* not found")
-            return None
-        
-        print(command_start, "command start")
-        num_args = int(self.buffer[command_start + 1: command_start+2].decode())
-        expected_length = command_start + 2
-        
-        for _ in range(num_args):
-            # Find the length of each argument
-            arg_length_start = self.buffer.find(b'$') + 1
-            arg_length_end = self.buffer.find(b'\r\n', arg_length_start)
-            if arg_length_end == -1:
-                return None  # Not enough data
+        try: 
+            command_start = self.buffer.find(b'*')
+            if command_start == '-1':
+                print("* not found")
+                return None
+            
+            print(command_start, "command start")
+            num_args = int(self.buffer[command_start + 1: command_start+2].decode())
+            expected_length = command_start + 2
+            
+            for _ in range(num_args):
+                # Find the length of each argument
+                arg_length_start = self.buffer.find(b'$') + 1
+                arg_length_end = self.buffer.find(b'\r\n', arg_length_start)
+                if arg_length_end == -1:
+                    return None  # Not enough data
 
-            arg_length = int(self.buffer[arg_length_start:arg_length_end].decode())
-            expected_length = arg_length_end + 2 + arg_length + 2  # Move past the argument and its CRLF
+                arg_length = int(self.buffer[arg_length_start:arg_length_end].decode())
+                expected_length = arg_length_end + 2 + arg_length + 2  # Move past the argument and its CRLF
 
-        return expected_length if expected_length <= len(self.buffer) else None
+            return expected_length if expected_length <= len(self.buffer) else None
+        
+        except Exception as e:
+            print("eerror in find_command_end", e)
+            return
+            
     
     def parse_command(self, command_data):
         
