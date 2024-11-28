@@ -48,6 +48,7 @@ class ReplicaServer:
         while True:
             try:
                 msg = self.sock.recv(1024)
+                print(msg, "received message")
                 print(parser.feed(msg), "master sent message loop")
                 if not msg:
                     print("Connection closed by the master")
