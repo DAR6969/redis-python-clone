@@ -18,16 +18,16 @@ class RedisProtocolParser:
             if array_start != -1:
                 self.buffer = self.buffer[array_start:]
                 print("enetred parsing code", self.buffer)
-                end_of_command = self.find_command_end()
-                print(end_of_command, "end of command")
-                if end_of_command is None:
-                    break
+                # end_of_command = self.find_command_end()
+                # print(end_of_command, "end of command")
+                # if end_of_command is None:
+                #     break
                 
-                command_data = self.buffer[:end_of_command + 2]
-                print(command_data, "command data")
-                self.buffer = self.buffer[end_of_command + 2:]
-                print(self.buffer, "remaining buffer")
-                parsed_commands.append(self.parse_command(command_data))
+                # command_data = self.buffer[:end_of_command + 2]
+                # print(command_data, "command data")
+                # self.buffer = self.buffer[end_of_command + 2:]
+                # print(self.buffer, "remaining buffer")
+                parsed_commands.append(self.parse(self.buffer))
             else:
                 break
     
