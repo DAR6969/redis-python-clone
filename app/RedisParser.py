@@ -14,7 +14,7 @@ class RedisProtocolParser:
             if not self.buffer:
                 break
             
-            if self.buffer.startswith(b'*'):
+            if self.buffer.find(b'*') != -1:
                 end_of_command = self.find_command_end()
                 if end_of_command is None:
                     break
@@ -30,6 +30,7 @@ class RedisProtocolParser:
     def find_command_end(self):
         command_start = self.buffer.find(b'*')
         if command_start == '-1':
+            print("* not found")
             return None
         
         num_args = int(self.buffer[command_start + 1: command_start+2].decode())
