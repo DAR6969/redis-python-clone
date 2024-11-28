@@ -1,4 +1,63 @@
 class RedisProtocolParser:
+    def __init__(self):
+        self.buffer = b''  # Buffer to hold incoming data
+    
+    def feed(self, data):
+        self.buffer += data 
+        commands = self.parse_buffer()
+        return commands
+    
+    def parse_buffer(self):
+        parsed_commands = []
+        while True:
+            if not self.buffer:
+                break
+            
+            if self.buffer.startswith(b'*'):
+                end_of_command = self.find_command_end()
+                if end_of_command is None:
+                    break
+                
+                command_data = self.buffer[:end_of_command + 2]
+                self.buffer = self.buffer[end_of_command + 2:]
+                parsed_commands.append(self.parse_command(command_data))
+            else:
+                break
+    
+        return parsed_commands
+    
+    def find_command_end(self):
+        command_start = self.buffer.find(b'*')
+        if command_start == '-1':
+            return None
+        
+        num_args = int(self.buffer[command_start + 1: command_start+2].decode())
+        expected_length = command_start + 2
+        
+        for _ in range(num_args):
+            # Find the length of each argument
+            arg_length_start = self.buffer.find(b'$') + 1
+            arg_length_end = self.buffer.find(b'\r\n', arg_length_start)
+            if arg_length_end == -1:
+                return None  # Not enough data
+
+            arg_length = int(self.buffer[arg_length_start:arg_length_end].decode())
+            expected_length = arg_length_end + 2 + arg_length + 2  # Move past the argument and its CRLF
+
+        return expected_length if expected_length <= len(self.buffer) else None
+    
+    def parse_command(self, command_data):
+        
+        commands = command_data.decode().split('\r\n')[:-1]
+        parsed_args = []
+        num_args = int(commands[0][1:])
+        for i in range(1, num_args +1):
+            arg_len = int(commands[0][1:])
+            arg = commands[i + num_args][:arg_len]
+            parsed_args.append(arg)
+        return parsed_args
+    
+    
     @staticmethod
     def parse(data):
         commands = data.decode().split('\r\n')[:-1]

@@ -11,6 +11,7 @@ class ReplicaServer:
         
     def listen_to_master(self):
         common_tools = CommonTools()
+        parser = RedisProtocolParser()
         print("hello")
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.sock.connect((common_tools.master_host, common_tools.master_port))
@@ -32,14 +33,14 @@ class ReplicaServer:
         
         self.sock.send(RedisProtocolParser.create_array(*common_tools.psync.split()))
         # full resync
-        response = self.sock.recv(1024)
-        print(response, "master rdb response")
-        time.sleep(1)
+        # response = self.sock.recv(1024)
+        # print(response, "master rdb response")
+        # time.sleep(1)
         
-        # rdb file
-        response = self.sock.recv(1024)
-        print(response, "master full rdb file")
-        time.sleep(1)
+        # # rdb file
+        # response = self.sock.recv(1024)
+        # print(response, "master full rdb file")
+        # time.sleep(1)
         
         # response = self.sock.recv(1024)
         # print(RedisProtocolParser.parse(response) , "check set commands new")
@@ -47,7 +48,7 @@ class ReplicaServer:
         while True:
             try:
                 msg = self.sock.recv(1024)
-                print(RedisProtocolParser.parse(msg), "master sent message loop")
+                print(parser.feed(msg), "master sent message loop")
                 if not msg:
                     print("Connection closed by the master")
                     break
