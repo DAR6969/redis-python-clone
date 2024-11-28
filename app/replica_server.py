@@ -38,8 +38,8 @@ class ReplicaServer:
         response = self.sock.recv(1024)
         print(response, "master full rdb file")
         
-        # response = self.sock.recv(1024)
-        # print(response, "check set commands")
+        response = self.sock.recv(1024)
+        print(response, "check set commands")
         
         # while True:
             # try:
