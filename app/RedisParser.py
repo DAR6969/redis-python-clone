@@ -26,7 +26,7 @@ class RedisProtocolParser:
                 command_data = self.buffer[:end_of_command + 2]
                 print(command_data, "command data")
                 self.buffer = self.buffer[end_of_command + 2:]
-                print(self.buffer, "final buffer")
+                print(self.buffer, "remaining buffer")
                 parsed_commands.append(self.parse_command(command_data))
             else:
                 break
@@ -64,11 +64,13 @@ class RedisProtocolParser:
     def parse_command(self, command_data):
         
         commands = command_data.decode().split('\r\n')[:-1]
+        print(commands, "parse func commands")
         parsed_args = []
         num_args = int(commands[0][1:])
         for i in range(1, num_args +1):
             arg_len = int(commands[0][1:])
             arg = commands[i + num_args][:arg_len]
+            print(arg, "loop arg")
             parsed_args.append(arg)
         return parsed_args
     
