@@ -254,6 +254,7 @@ def main():
     if master is not None:
         replica_handshake = ReplicaServer()
         replica_handshake.listen_to_master()
+        threading.Thread(target=replica_handshake.listen_to_master(), daemon=True)
         
         print("server socket reached")
         # print(f"{response.decode()}, dhruv new replica socket response from master 4")
