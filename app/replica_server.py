@@ -6,13 +6,7 @@ from app.RedisParser import RedisProtocolParser
 class ReplicaServer:
     
     def __init__(self) -> None:
-        # create a self.socket endpoint and connect to the master that is created somewhere else
-        
-        # response = self.sock.recv(1024)
-        # print(response, "connection done on replica")
         pass
-        
-        # self.listen_to_master()
         
     def listen_to_master(self):
         common_tools = CommonTools()
@@ -43,6 +37,9 @@ class ReplicaServer:
         # rdb file
         response = self.sock.recv(1024)
         print(response, "master full rdb file")
+        
+        response = self.sock.recv(1024)
+        print(response, "check set commands")
         
         # while True:
             # try:
