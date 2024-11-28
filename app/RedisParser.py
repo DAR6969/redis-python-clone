@@ -17,7 +17,6 @@ class RedisProtocolParser:
             array_start = self.buffer.find(b'*')
             if array_start != -1:
                 self.buffer = self.buffer[array_start:]
-                print(self.buffer)
                 print("enetred parsing code", self.buffer)
                 end_of_command = self.find_command_end()
                 if end_of_command is None:
@@ -37,6 +36,7 @@ class RedisProtocolParser:
             print("* not found")
             return None
         
+        print(command_start, "command start")
         num_args = int(self.buffer[command_start + 1: command_start+2].decode())
         expected_length = command_start + 2
         
