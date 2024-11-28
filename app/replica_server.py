@@ -1,4 +1,5 @@
 import socket
+import time
 
 from app.common_file import CommonTools
 from app.RedisParser import RedisProtocolParser
@@ -33,10 +34,12 @@ class ReplicaServer:
         # full resync
         response = self.sock.recv(1024)
         print(response, "master rdb response")
+        time.sleep(1)
         
         # rdb file
         response = self.sock.recv(1024)
         print(response, "master full rdb file")
+        time.sleep(1)
         
         # response = self.sock.recv(1024)
         # print(RedisProtocolParser.parse(response) , "check set commands new")
