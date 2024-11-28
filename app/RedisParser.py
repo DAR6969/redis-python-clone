@@ -27,12 +27,12 @@ class RedisProtocolParser:
                 # print(command_data, "command data")
                 # self.buffer = self.buffer[end_of_command + 2:]
                 # print(self.buffer, "remaining buffer")
-                parsed_commands.append(self.parse(self.buffer))
+                # parsed_commands.append(self.parse(self.buffer))
                 break
             else:
                 break
     
-        return parsed_commands
+        return self.parse(self.buffer)
     
     def find_command_end(self):
         try: 
