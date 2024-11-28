@@ -15,6 +15,7 @@ class RedisProtocolParser:
                 break
             
             if self.buffer.find(b'*') != -1:
+                print("enetred parsing code", self.buffer)
                 end_of_command = self.find_command_end()
                 if end_of_command is None:
                     break
