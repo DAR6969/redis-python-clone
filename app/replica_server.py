@@ -38,17 +38,17 @@ class ReplicaServer:
         response = self.sock.recv(1024)
         print(response, "master full rdb file")
         
-        response = self.sock.recv(1024)
-        print(RedisProtocolParser.parse(response) , "check set commands new")
+        # response = self.sock.recv(1024)
+        # print(RedisProtocolParser.parse(response) , "check set commands new")
         
-        # while True:
-            # try:
-            #     msg = self.sock.recv(1024)
-            #     print(RedisProtocolParser.parse(msg), "master sent message")
-            #     if not msg:
-            #         print("Connection closed by the master")
-            #         break
-            #     print(f"Received Message from master")
-            # except Exception as e:
-            #     print(f"Error while receiving message on replicaY: {e}")
-            #     break
+        while True:
+            try:
+                msg = self.sock.recv(1024)
+                print(RedisProtocolParser.parse(msg), "master sent message")
+                if not msg:
+                    print("Connection closed by the master")
+                    break
+                print(f"Received Message from master")
+            except Exception as e:
+                print(f"Error while receiving message on replicaY: {e}")
+                break
