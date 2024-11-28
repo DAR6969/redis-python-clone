@@ -250,9 +250,10 @@ def main():
     else:
         common_tools.set_my_port(6379)
         print("Port number not specified, going with 6379.")
-        
+
     if master is not None:
-        new_replica = ReplicaServer()
+        replica_handshake = ReplicaServer()
+        replica_handshake.listen_to_master()
         
         print("server socket reached")
         # print(f"{response.decode()}, dhruv new replica socket response from master 4")

@@ -10,8 +10,9 @@ class ReplicaServer:
         
         # response = self.sock.recv(1024)
         # print(response, "connection done on replica")
+        pass
         
-        self.listen_to_master()
+        # self.listen_to_master()
         
     def listen_to_master(self):
         common_tools = CommonTools()
