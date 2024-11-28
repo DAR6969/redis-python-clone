@@ -17,12 +17,12 @@ class RedisProtocolParser:
                     commands.pop(0)
                     for _ in range(num_args):
                         cmd_new = commands.pop(0)
-                        # print(cmd_new, "dhruv new")
-                        # print(commands, "dhruv commads pop 1")
+                        print(cmd_new, "dhruv new")
+                        print(commands, "dhruv commads pop 1")
                         arg_len = int(cmd_new[1:])
                         arg = commands.pop(0)[:arg_len]
-                        # print(commands, "dhruv commads pop 2")
-                        # print(arg, "dhruv arg")
+                        print(commands, "dhruv commads pop 2")
+                        print(arg, "dhruv arg")
                         parsed_args.append(arg)
                     parsed_commands.append(parsed_args)
         return parsed_commands
