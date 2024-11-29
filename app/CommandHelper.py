@@ -44,7 +44,7 @@ def set(connection, commands):
 
 def replica_set(commands):
     for command in commands:
-        common.get_map[command[0][1]] = command[0][2]
+        common.get_map[command[1]] = command[2]
     
     print(common.get_map, "updated get_map")
  
