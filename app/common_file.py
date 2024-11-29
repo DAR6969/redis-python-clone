@@ -6,6 +6,7 @@ class CommonTools:
     psync = "PSYNC ? -1"
     master_host = ""
     master_port = 0
+    replica_server = False
     slaves = {}
     replica_backlog = []
     get_map = {}

@@ -30,7 +30,8 @@ def handle_commands_server(connection, address):
             elif commands[0][0] == "PSYNC":
                 cmd_helper.master_receive_psync(connection, address)
             # print(len(replica_backlog), "dhruv length backlog new 1")
-    
+
+        connection.close()
         
         
         
