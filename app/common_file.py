@@ -29,6 +29,12 @@ class CommonTools:
     def set_master_addr(self, host, port):
         CommonTools.master_host = host
         CommonTools.master_port = int(port)
+    
+    def set_replica_server(self, value: bool):
+        CommonTools.replica_server = value
+    
+    
+    
 
     
     

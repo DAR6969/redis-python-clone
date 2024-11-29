@@ -49,7 +49,7 @@ def main():
     # assign port based on replica or master 
     if args.port is not None:
         common_tools.set_my_port(args.port)
-        print(f"Port number: {common_tools.my_local_port}")
+        print(f"Port number: {CommonTools.my_local_port}")
     else:
         common_tools.set_my_port(6379)
         print("Port number not specified, going with 6379.")
@@ -61,7 +61,7 @@ def main():
     # create my own server (I could be master or replica) 
     # that will listen to connections from clients (could be replicas or other clients)  
     print("server socket reached")
-    server_socket = socket.create_server(("localhost", int(common_tools.my_local_port)), reuse_port=True)
+    server_socket = socket.create_server(("localhost", int(CommonTools.my_local_port)), reuse_port=True)
     while True:
         connection, address = server_socket.accept()
         t1 = threading.Thread(target=op.handle_commands_server, args=(connection, address),name="t1")
