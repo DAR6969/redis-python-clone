@@ -37,7 +37,7 @@ def main():
     args = parse_arguments()
     master = args.master
     if master is not None:
-        CommonTools.set_replica_server(True)
+        CommonTools.set_replica_server(value=True)
         master = master[0].split()
         print(master)
         common_tools.set_master_addr(master[0], master[1])
