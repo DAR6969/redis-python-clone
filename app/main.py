@@ -14,7 +14,7 @@ print("Current Working Directory:", os.getcwd())
 print("Python Path:", sys.path)
 
 from app.common_file import CommonTools
-from app.replica_server import ReplicaServer
+from app.replica_handshake import ReplicaListener
 from app.RedisParser import RedisProtocolParser
 
 
@@ -55,7 +55,7 @@ def main():
         print("Port number not specified, going with 6379.")
 
     if master is not None:
-        replica_handshake = ReplicaServer()
+        replica_handshake = ReplicaListener()
         threading.Thread(target=replica_handshake.listen_to_master, daemon=True).start()
     
     # create my own server (I could be master or replica) 

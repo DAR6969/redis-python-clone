@@ -41,7 +41,13 @@ def set(connection, commands):
         timer = threading.Timer(delay, remove_key_px, args=(key_remove, delay))
         timer.start()
     print(common.get_map, "dhruv map set")
+
+def replica_set(commands):
+    for command in commands:
+        common.get_map[command[0][1]] = command[0][2]
     
+    print(common.get_map, "updated get_map")
+ 
 def remove_key_px(key, delay):
     # time.sleep(delay)  # Sleep for the specified delay
     if key in common.get_map:

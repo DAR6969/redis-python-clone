@@ -4,7 +4,7 @@ import time
 from app.common_file import CommonTools
 from app.RedisParser import RedisProtocolParser
 
-class ReplicaServer:
+class ReplicaListener:
     
     def __init__(self) -> None:
         pass
