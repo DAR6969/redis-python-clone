@@ -21,7 +21,7 @@ def handle_commands_server(connection, address):
                 cmd_helper.echo(connection, commands)
             elif commands[0][0] == "set" or commands[0][0] == "SET" :
                 cmd_helper.set(connection, commands)
-            elif commands[0][0] == "get":
+            elif commands[0][0].lower() == "get":
                 cmd_helper.get(connection, commands)
             elif commands[0][0] == "INFO":
                 cmd_helper.info()
