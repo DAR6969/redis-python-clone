@@ -8,6 +8,8 @@ import base64
 import os
 import sys
 
+import server_op as op
+
 print("Current Working Directory:", os.getcwd())
 print("Python Path:", sys.path)
 
@@ -253,18 +255,15 @@ def main():
 
     if master is not None:
         replica_handshake = ReplicaServer()
-        # replica_handshake.listen_to_master()
         threading.Thread(target=replica_handshake.listen_to_master, daemon=True).start()
-        
-        print("server socket reached")
-        # print(f"{response.decode()}, dhruv new replica socket response from master 4")
     
     # create my own server (I could be master or replica) 
-    # that will listen to connections from clients (could be replicas or other clients)
+    # that will listen to connections from clients (could be replicas or other clients)  
+    print("server socket reached")
     server_socket = socket.create_server(("localhost", int(common_tools.my_local_port)), reuse_port=True)
     while True:
         connection, address = server_socket.accept()
-        t1 = threading.Thread(target=handleRequest, args=(connection, address),name="t1")
+        t1 = threading.Thread(target=op.handle_commands_server, args=(connection, address),name="t1")
         t1.start()
     t1.join()
 

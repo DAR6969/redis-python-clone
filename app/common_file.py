@@ -6,6 +6,14 @@ class CommonTools:
     psync = "PSYNC ? -1"
     master_host = ""
     master_port = 0
+    slaves = {}
+    replica_backlog = []
+    get_map = {}
+    replica_port = ""
+    received_replica_handshake = False
+    pong = "+PONG\r\n"
+    ok = "+OK\r\n"
+    null_bulk = "$-1\r\n"
         
     def __init__(self) -> None:
         pass
