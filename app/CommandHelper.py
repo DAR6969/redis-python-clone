@@ -6,10 +6,10 @@ from app.RedisParser import RedisProtocolParser
 common = CommonTools()
 
 def send_pong(connection):
-    connection.send(common.pong)
+    connection.send(common.pong.encode())
 
 def echo(connection, commands):
-    response = RedisProtocolParser.feed(commands[0][1])
+    response = RedisProtocolParser.encode_redis_bulk_string(commands[0][1])
     connection.send(response)
 
 def set(connection, commands):
