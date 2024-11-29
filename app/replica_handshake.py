@@ -1,6 +1,8 @@
 import socket
 import time
 
+import app.CommandHelper as cmd_helper
+
 from app.common_file import CommonTools
 from app.RedisParser import RedisProtocolParser
 
@@ -49,7 +51,9 @@ class ReplicaListener:
             try:
                 msg = self.sock.recv(1024)
                 print(msg, "received message")
-                print(parser.feed(msg), "master sent message loop")
+                command = parser.feed(msg)
+                print(command, "master sent message loop")
+                cmd_helper.replica_set(command)
                 if not msg:
                     print("Connection closed by the master")
                     break
