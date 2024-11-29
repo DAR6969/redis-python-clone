@@ -7,7 +7,7 @@ class RedisProtocolParser:
         self.buffer += data 
         commands = self.parse_buffer()
         print(commands, "new parser")
-        if not self.server:
+        if self.server:
             self.buffer = b''
         return commands
     
