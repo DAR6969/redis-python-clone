@@ -24,7 +24,7 @@ def handle_commands_server(connection, address):
             elif commands[0][0].lower() == "get":
                 cmd_helper.get(connection, commands)
             elif commands[0][0] == "INFO":
-                cmd_helper.info()
+                cmd_helper.info(connection)
             elif commands[0][0] == "REPLCONF":   
                 cmd_helper.master_receive_replconf(connection, address, commands)
             elif commands[0][0] == "PSYNC":

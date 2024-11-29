@@ -78,7 +78,7 @@ def get(connection, commands):
         response = common.null_bulk.encode()
     connection.send(response) 
 
-def info():
+def info(connection):
     if common.replica_server:
         print("replicate comm recieved")
         common.connection.send("$10\r\nrole:slave\r\n".encode())    
@@ -91,7 +91,7 @@ def info():
         # role_info_result = RedisProtocolParser.create_bulk_string("role:master")
         new_info_result = RedisProtocolParser.create_bulk_string(new_string)
         print(new_info_result, "dhruv new result")
-        common.connection.send(new_info_result)
+        connection.send(new_info_result)
         
 def master_receive_replconf(connection, address, commands):
     ok_response = "+OK\r\n"
