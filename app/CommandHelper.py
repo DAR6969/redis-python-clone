@@ -81,7 +81,7 @@ def get(connection, commands):
 def info(connection):
     if CommonTools.replica_server:
         print("replicate comm recieved")
-        CommonTools.connection.send("$10\r\nrole:slave\r\n".encode())    
+        connection.send("$10\r\nrole:slave\r\n".encode())    
     else:
         print("master comm received")
         role=f"role:master"
