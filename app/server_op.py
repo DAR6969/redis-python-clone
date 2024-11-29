@@ -17,7 +17,7 @@ def handle_commands_server(connection, address):
             
             if commands[0] == "ping" or commands[0] == "PING":
                 cmd_helper.send_pong(connection)
-            elif commands[0][0] == "echo":
+            elif commands[0][0].lower() == "echo":
                 cmd_helper.echo(connection, commands)
             elif commands[0][0] == "set" or commands[0][0] == "SET" :
                 cmd_helper.set(connection, commands)
