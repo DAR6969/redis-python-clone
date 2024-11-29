@@ -1,11 +1,14 @@
 class RedisProtocolParser:
-    def __init__(self):
+    def __init__(self, server=False):
         self.buffer = b''  # Buffer to hold incoming data
+        self.server = server
     
     def feed(self, data):
         self.buffer += data 
         commands = self.parse_buffer()
         print(commands, "new parser")
+        if not self.server:
+            self.buffer = b''
         return commands
     
     def parse_buffer(self):
