@@ -28,7 +28,7 @@ def handle_commands_server(connection, address=None):
                 cmd_helper.info(connection)
             elif commands[0][0] == "REPLCONF":   
                 if CommonTools.replica_server:
-                    cmd_helper.send_replconf_ack(connection)
+                    cmd_helper.send_replconf_ack(connection, commands)
                 else:
                     cmd_helper.master_receive_replconf(connection, address, commands)
             elif commands[0][0] == "PSYNC":

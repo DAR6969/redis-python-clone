@@ -94,19 +94,20 @@ class RedisProtocolParser:
             for cmd in commands_copy:
                 print(cmd, "cmd watcher bug new")
                 if cmd.startswith('*'):
-                    num_args = int(cmd[1:])
-                    parsed_args = []
-                    commands.pop(0)
-                    for _ in range(num_args):
-                        cmd_new = commands.pop(0)
-                        # print(cmd_new, "dhruv new")
-                        # print(commands, "dhruv commads pop 1")
-                        arg_len = int(cmd_new[1:])
-                        arg = commands.pop(0)[:arg_len]
-                        # print(commands, "dhruv commads pop 2")
-                        # print(arg, "dhruv arg")
-                        parsed_args.append(arg)
-                    parsed_commands.append(parsed_args)
+                    if len(cmd) > 1:
+                        num_args = int(cmd[1:])
+                        parsed_args = []
+                        commands.pop(0)
+                        for _ in range(num_args):
+                            cmd_new = commands.pop(0)
+                            # print(cmd_new, "dhruv new")
+                            # print(commands, "dhruv commads pop 1")
+                            arg_len = int(cmd_new[1:])
+                            arg = commands.pop(0)[:arg_len]
+                            # print(commands, "dhruv commads pop 2")
+                            # print(arg, "dhruv arg")
+                            parsed_args.append(arg)
+                        parsed_commands.append(parsed_args)
         return parsed_commands
     
     def encode_redis_bulk_string(input_string):
