@@ -92,7 +92,7 @@ class RedisProtocolParser:
         else:    
             commands_copy = commands.copy()
             for cmd in commands_copy:
-                print(cmd, "cmd watcher bug")
+                print(cmd, "cmd watcher bug new")
                 if cmd.startswith('*'):
                     num_args = int(cmd[1:])
                     parsed_args = []
