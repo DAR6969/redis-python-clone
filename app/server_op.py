@@ -12,7 +12,8 @@ def handle_commands_server(connection, server_arg, address=None):
             
             if not data_stream:
                 break
-                
+            
+            print(data_stream, "data stream")
             commands = parser.feed(data_stream)
             print(commands, "dhruv commands")
             
