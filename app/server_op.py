@@ -27,7 +27,7 @@ def handle_commands_server(connection, server_arg, address=None):
             elif commands[0][0] == "set" or commands[0][0] == "SET" :
                 if not server_arg:
                     print("entered replica set if new 2")
-                    cmd_helper.replica_set(connection, commands)
+                    cmd_helper.replica_set(commands)
                 else:
                     cmd_helper.set(connection, commands)
             elif commands[0][0].lower() == "get":
