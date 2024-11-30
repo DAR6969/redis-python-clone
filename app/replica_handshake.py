@@ -5,6 +5,7 @@ import app.CommandHelper as cmd_helper
 
 from app.common_file import CommonTools
 from app.RedisParser import RedisProtocolParser
+from app.server_op import handle_commands_server
 
 class ReplicaListener:
     
@@ -46,6 +47,8 @@ class ReplicaListener:
         
         # response = self.sock.recv(1024)
         # print(RedisProtocolParser.parse(response) , "check set commands new")
+        
+        handle_commands_server(self.sock)
         
         while True:
             try:

@@ -121,4 +121,6 @@ def master_receive_psync(connection, address):
         # global received_replica_handshake
         CommonTools.received_replica_handshake = True
     
+def send_replconf_ack(connection):
+    connection.send(RedisProtocolParser.create_array(*CommonTools.REPLCONF_ack.split()))
     

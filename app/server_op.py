@@ -1,8 +1,9 @@
 from app.RedisParser import RedisProtocolParser
 import app.CommandHelper as cmd_helper
+from app.common_file import CommonTools
 
 
-def handle_commands_server(connection, address):
+def handle_commands_server(connection, address=None):
     parser = RedisProtocolParser(server=True)
     
     with connection:
@@ -26,7 +27,10 @@ def handle_commands_server(connection, address):
             elif commands[0][0] == "INFO":
                 cmd_helper.info(connection)
             elif commands[0][0] == "REPLCONF":   
-                cmd_helper.master_receive_replconf(connection, address, commands)
+                if CommonTools.replica_server:
+                    cmd_helper.send_replconf_ack(connection)
+                else:
+                    cmd_helper.master_receive_replconf(connection, address, commands)
             elif commands[0][0] == "PSYNC":
                 cmd_helper.master_receive_psync(connection, address)
             # print(len(replica_backlog), "dhruv length backlog new 1")

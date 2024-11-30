@@ -3,6 +3,7 @@ class CommonTools:
     ping = "PING"
     REPLCONF_port = "REPLCONF listening-port "
     REPLCONF_capa = "REPLCONF capa psync2"
+    REPLCONF_ack = "REPLCONF ACK 0"
     psync = "PSYNC ? -1"
     master_host = ""
     master_port = 0
