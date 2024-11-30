@@ -21,11 +21,11 @@ def handle_commands_server(connection, server_arg, address=None):
             elif commands[0][0].lower() == "echo":
                 cmd_helper.echo(connection, commands)
             elif commands[0][0] == "set" or commands[0][0] == "SET" :
-                # if CommonTools.replica_server:
-                #     print("entered replica set if")
-                #     cmd_helper.replica_set(connection, commands)
-                # else:
-                cmd_helper.set(connection, commands)
+                if server_arg:
+                    print("entered replica set if")
+                    cmd_helper.replica_set(connection, commands)
+                else:
+                    cmd_helper.set(connection, commands)
             elif commands[0][0].lower() == "get":
                 cmd_helper.get(connection, commands)
             elif commands[0][0] == "INFO":
