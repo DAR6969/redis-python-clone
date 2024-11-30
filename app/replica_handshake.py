@@ -48,19 +48,19 @@ class ReplicaListener:
         # response = self.sock.recv(1024)
         # print(RedisProtocolParser.parse(response) , "check set commands new")
         
-        handle_commands_server(self.sock)
+        handle_commands_server(self.sock, server_arg=False)
         
-        while True:
-            try:
-                msg = self.sock.recv(1024)
-                print(msg, "received message")
-                command = parser.feed(msg)
-                print(command, "master sent message loop")
-                cmd_helper.replica_set(command)
-                if not msg:
-                    print("Connection closed by the master")
-                    break
-                print(f"Received Message from master")
-            except Exception as e:
-                print(f"Error while receiving message on replica new: {e}")
-                break   
+        # while True:
+        #     try:
+        #         msg = self.sock.recv(1024)
+        #         print(msg, "received message")
+        #         command = parser.feed(msg)
+        #         print(command, "master sent message loop")
+        #         cmd_helper.replica_set(command)
+        #         if not msg:
+        #             print("Connection closed by the master")
+        #             break
+        #         print(f"Received Message from master")
+        #     except Exception as e:
+        #         print(f"Error while receiving message on replica new: {e}")
+        #         break   

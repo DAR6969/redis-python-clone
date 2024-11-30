@@ -64,7 +64,7 @@ def main():
     server_socket = socket.create_server(("localhost", int(CommonTools.my_local_port)), reuse_port=True)
     while True:
         connection, address = server_socket.accept()
-        t1 = threading.Thread(target=op.handle_commands_server, args=(connection, address),name="t1")
+        t1 = threading.Thread(target=op.handle_commands_server, args=(connection, True ,address),name="t1")
         t1.start()
     t1.join()
 

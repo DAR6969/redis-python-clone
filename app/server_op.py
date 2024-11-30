@@ -3,8 +3,8 @@ import app.CommandHelper as cmd_helper
 from app.common_file import CommonTools
 
 
-def handle_commands_server(connection, address=None):
-    parser = RedisProtocolParser(server=True)
+def handle_commands_server(connection, server_arg, address=None):
+    parser = RedisProtocolParser(server=server_arg)
     
     with connection:
         while True:
