@@ -59,5 +59,5 @@ class ReplicaListener:
                     break
                 print(f"Received Message from master")
             except Exception as e:
-                print(f"Error while receiving message on replicaY: {e}")
+                print(f"Error while receiving message on replica new: {e}")
                 break   
