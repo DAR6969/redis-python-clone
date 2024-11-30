@@ -17,6 +17,9 @@ def handle_commands_server(connection, server_arg, address=None):
             commands = parser.feed(data_stream)
             print(commands, "dhruv commands")
             
+            if not commands:
+                continue
+            
             if commands[0] == "ping" or commands[0] == "PING":
                 cmd_helper.send_pong(connection)
             elif commands[0][0].lower() == "echo":
